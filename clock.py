@@ -1,45 +1,73 @@
-
-# https://elinux.org/RPi_GPIO_Interface_Circuits#Buttons_and_switches
-# reed switch needs resistor!!
-# avoid sensor needs resistor!!
-# button needs resistor!!
-# stepper doesn't need resistor!!
-# Servos:
-# https://tutorials-raspberrypi.de/raspberry-pi-servo-motor-steuerung/
-
 import RPi.GPIO as GPIO
 import time
+import os
 import logging
+from stepper import Stepper
+from subprocess import call
+from servo import Servo
 
-
-GPIO.setmode(GPIO.BOARD)
+GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-logging.basicConfig(filename='raspi.log', filemode='a', format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, filename='raspi.log', filemode='a', format='%(asctime)s - %(levelname)s - %(message)s')
 
-stepper_pins = [7,11,13,15]
+stepper_pins_1 = [3, 4, 18, 27]
+stepper_pins_2 = [23, 24, 10, 9]
 delay = 0.001
+GPIO.setup(2, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.setup(11, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.setup(22, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+
+stepper1 = Stepper(stepper_pins_1, delay)
+stepper2 = Stepper(stepper_pins_2, delay)
+servo1 = Servo(17, 0)
+servo1.set_to_zero()
 
 
-def stepper(stepper_pins, delay):
-    for pin in stepper_pins:
-        try:
-            GPIO.setup(pin, GPIO.OUT)
-            GPIO.output(pin, 0)
-        except Exception as e:
-            logging.error("%s", e)
-            logging.error("Pin %d not working", pin)
+def measure_temp():
+    temp = os.popen("vcgencmd measure_temp").readline()
+    return(temp.replace("temp=", ""))
 
-    steps_seq = [[1,0,0,0], [1,1,0,0], [0,1,0,0], [0,1,1,0], [0,0,1,0], [0,0,1,1], [0,0,0,1], [1,0,0,1]]
+def action():
+    for counter_disc in  range(100):
+        stepper2.step()
+    counter_disc_failure = 0
+    while(GPIO.input(11) == 1):
+        counter_disc_failure += 1
+        stepper2.step()
+        if(counter_disc_failure > 1000):
+            main()
+    
+    servo1.move(180, 0.5, 0)
 
-    for step in range(8):
-        for pin in range(4):
-            GPIO.output(stepper_pins[pin], steps_seq[step][pin])
-        time.sleep(delay)
+    stepper1.hold()
+    stepper2.hold()
+
+    real_temp = measure_temp()[:3]
+    if(float(real_temp) >= 70.0):
+        call("sudo nohub shutdown -h now", shell=True)
+    
+    logging.info("Temp: %s", str(real_temp))
+
+    main()
 
 def main():
-    # one revolution 512 (not sure!)
-    for i in range(512):
-        stepper(stepper_pins, delay)
+    run_bool = True
+    while(run_bool):
+        if(GPIO.input(22) == 1):
+            run_bool = False
+
+    for counter_reed in range(100):
+        stepper1.step()
+
+    while(GPIO.input(2) == 0):
+        stepper1.step()
+    
+    time.sleep(1)
+
+    for counter_last_tick in range(43):
+        stepper1.step()
+
+    action()
 
 if __name__ == '__main__':
     main()
