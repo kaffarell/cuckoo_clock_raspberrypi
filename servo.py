@@ -20,16 +20,16 @@ class Servo:
         return (angle / 18.0) + 2.5
 
     def move(self, position, speed, actual_pos):
-        self.servo_letter[self.servo_letter_index].start(actual_pos)
         real_pos = self.get_pwm(position)
         real_actual_pos = self.get_pwm(actual_pos)
-        print("%d destination", real_pos)
-        print("%d actual pos", real_actual_pos)
+        self.servo_letter[self.servo_letter_index].start(real_actual_pos)
         i = float(actual_pos)
-        for i in numpy.arange(real_actual_pos, real_pos, 1):
-            self.servo_letter[self.servo_letter_index].ChangeDutyCycle(i)
-            print(i)
-            time.sleep(speed)
+        self.servo_letter[self.servo_letter_index].ChangeDutyCycle(real_pos)
+        time.sleep(2.5)
+
+        #for i in numpy.arange(real_actual_pos, real_pos, 0.05):
+            #self.servo_letter[self.servo_letter_index].ChangeDutyCycle(i)
+            #time.sleep(speed)
         self.servo_letter[self.servo_letter_index].stop()
 
     def set_to_zero(self):

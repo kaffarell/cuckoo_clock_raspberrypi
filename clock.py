@@ -16,6 +16,7 @@ delay = 0.001
 GPIO.setup(2, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 GPIO.setup(11, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 GPIO.setup(22, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.setup(8, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 
 stepper1 = Stepper(stepper_pins_1, delay)
 stepper2 = Stepper(stepper_pins_2, delay)
@@ -37,14 +38,16 @@ def action():
         if(counter_disc_failure > 1000):
             main()
     
-    servo1.move(180, 0.5, 0)
+    servo1.set_to_zero()   
+    servo1.move(180, 0.01, 0)
+    servo1.move(0, 0.01, 180)
 
     stepper1.hold()
     stepper2.hold()
 
     real_temp = measure_temp()[:3]
     if(float(real_temp) >= 70.0):
-        call("sudo nohub shutdown -h now", shell=True)
+        call("sudo schutdown -h now", shell=True)
     
     logging.info("Temp: %s", str(real_temp))
 
@@ -55,6 +58,12 @@ def main():
     while(run_bool):
         if(GPIO.input(22) == 1):
             run_bool = False
+
+        # https://elinux.org/RPi_GPIO_Interface_Circuits
+        # power button external, need resistor
+        # level shifter
+        print(GPIO.input(8))
+
 
     for counter_reed in range(100):
         stepper1.step()
