@@ -16,7 +16,7 @@ delay = 0.001
 GPIO.setup(2, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 GPIO.setup(11, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 GPIO.setup(22, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-GPIO.setup(8, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.setup(21, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 
 stepper1 = Stepper(stepper_pins_1, delay)
 stepper2 = Stepper(stepper_pins_2, delay)
@@ -56,11 +56,11 @@ def action():
 def main():
     run_bool = True
     while(run_bool):
-        if(GPIO.input(22) == 1):
+        if(GPIO.input(22) == 0):
             run_bool = False
 
         # level shifter
-        print(GPIO.input(8))
+        print(GPIO.input(21))
 
 
     for counter_reed in range(100):
