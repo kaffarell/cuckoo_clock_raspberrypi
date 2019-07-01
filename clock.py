@@ -15,8 +15,8 @@ stepper_pins_2 = [23, 24, 10, 9]
 delay = 0.001
 GPIO.setup(2, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 GPIO.setup(11, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-GPIO.setup(22, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-GPIO.setup(8, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.setup(22, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+GPIO.setup(26, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
 stepper1 = Stepper(stepper_pins_1, delay)
 stepper2 = Stepper(stepper_pins_2, delay)
@@ -47,7 +47,7 @@ def action():
 
     real_temp = measure_temp()[:3]
     if(float(real_temp) >= 70.0):
-        call("sudo schutdown -h now", shell=True)
+        call("sudo shutdown -h now", shell=True)
     
     logging.info("Temp: %s", str(real_temp))
 
@@ -55,13 +55,16 @@ def action():
 
 def main():
     run_bool = True
+    shutdown_counter = 0
     while(run_bool):
+        time.sleep(0.5)
         if(GPIO.input(22) == 1):
             run_bool = False
-
-        # level shifter -> 5v to 3.3v converter
-        print(GPIO.input(8))
-
+        if(GPIO.input(26) == 1):
+            shutdown_counter += 1
+            print("hold")
+            if(shutdown_counter >= 7):
+                call("sudo shutdown -h now", shell=True)
 
     for counter_reed in range(100):
         stepper1.step()
