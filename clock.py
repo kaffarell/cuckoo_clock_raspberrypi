@@ -59,8 +59,6 @@ def main():
         if(GPIO.input(22) == 1):
             run_bool = False
 
-        # https://elinux.org/RPi_GPIO_Interface_Circuits
-        # power button external, need resistor
         # level shifter
         print(GPIO.input(8))
 
