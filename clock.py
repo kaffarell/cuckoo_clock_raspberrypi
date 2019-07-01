@@ -31,6 +31,7 @@ def measure_temp():
     return(temp.replace("temp=", ""))
 
 def action():
+    stepper1.hold()
     for counter_disc in  range(100):
         stepper2.step()
     counter_disc_failure = 0
@@ -44,7 +45,6 @@ def action():
     servo1.move(180, 0.01, 0)
     servo1.move(0, 0.01, 180)
 
-    stepper1.hold()
     stepper2.hold()
 
     real_temp = measure_temp()[:3]
