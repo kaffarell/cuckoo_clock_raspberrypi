@@ -50,6 +50,7 @@ def action():
 
     real_temp = measure_temp()[:3]
     if(float(real_temp) >= 75.0):
+        logging.error("rasperrypi overheating!")
         call("sudo shutdown -h now", shell=True)
     
     logging.info("Temp: %s", str(real_temp))
@@ -71,9 +72,14 @@ def main():
 
     for counter_reed in range(100):
         stepper1.step()
-
+    
+    clock_counter_failure = 0
     while(GPIO.input(2) == 0):
+        clock_counter_failure += 1
         stepper1.step()
+        if(clock_counter_failure => 1000):
+            logging.error("clock sensor failed!")
+            main()
     
     time.sleep(1)
 
