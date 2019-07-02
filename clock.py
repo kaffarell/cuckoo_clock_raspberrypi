@@ -8,7 +8,9 @@ from servo import Servo
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-logging.basicConfig(level=logging.INFO, filename='raspi.log', filemode='a', format='%(asctime)s - %(levelname)s - %(message)s')
+
+logging.basicConfig(level=logging.DEBUG, filename='raspi.log', filemode='a', format='%(asctime)s - %(levelname)s - %(message)s')
+
 
 stepper_pins_1 = [3, 4, 18, 27]
 stepper_pins_2 = [23, 24, 10, 9]
@@ -66,7 +68,7 @@ def main():
             shutdown_counter += 1
             print("hold")
             if(shutdown_counter >= 7):
-                logging.debug("shutdown raspberry pi")
+                logging.info("shutdown raspberry pi")
                 call("sudo shutdown -h now", shell=True)
 
     for counter_reed in range(100):
