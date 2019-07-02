@@ -23,8 +23,6 @@ GPIO.setup(26, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 stepper1 = Stepper(stepper_pins_1, delay)
 stepper2 = Stepper(stepper_pins_2, delay)
 servo1 = Servo(17, 0)
-servo1.set_to_zero()
-
 
 def measure_temp():
     temp = os.popen("vcgencmd measure_temp").readline()
@@ -40,15 +38,18 @@ def action():
         stepper2.step()
         if(counter_disc_failure > 1000):
             main()
-    
-    servo1.set_to_zero()   
-    servo1.move(180, 0.01, 0)
-    servo1.move(0, 0.01, 180)
+
+    servo1.start()
+    servo1.set_to_zero()
+    servo1.move(12.5)
+    servo1.move(2.5)
+    servo1.move(12.5)
+    servo1.stop()
 
     stepper2.hold()
 
     real_temp = measure_temp()[:3]
-    if(float(real_temp) >= 70.0):
+    if(float(real_temp) >= 75.0):
         call("sudo shutdown -h now", shell=True)
     
     logging.info("Temp: %s", str(real_temp))
