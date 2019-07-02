@@ -2,9 +2,12 @@ import RPi.GPIO as GPIO
 import time
 import os
 import logging
+from pygame import mixer
 from stepper import Stepper
 from subprocess import call
 from servo import Servo
+
+
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
@@ -48,6 +51,11 @@ def action():
     servo1.move(12.5)
     servo1.move(2.5)
     stepper2.hold()
+    
+    mixer.init()
+    sound = mixer.Sound("excavator_sound.wav")
+    sound.play()
+    
 
     real_temp = measure_temp()[:3]
     if(float(real_temp) >= 75.0):
