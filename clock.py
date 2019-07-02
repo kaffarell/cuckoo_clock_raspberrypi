@@ -66,6 +66,7 @@ def main():
             shutdown_counter += 1
             print("hold")
             if(shutdown_counter >= 7):
+                logging.debug("shutdown raspberry pi")
                 call("sudo shutdown -h now", shell=True)
 
     for counter_reed in range(100):
