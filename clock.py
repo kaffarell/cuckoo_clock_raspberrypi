@@ -41,9 +41,9 @@ def action():
 
     servo1.start()
     servo1.set_to_zero()
-    servo1.move(12.5)
-    servo1.move(2.5)
-    servo1.move(12.5)
+    servo1.move(10)
+    servo1.move(5)
+    servo1.move(10)
     servo1.stop()
 
     stepper2.hold()
