@@ -25,6 +25,7 @@ GPIO.setup(26, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 stepper1 = Stepper(stepper_pins_1, delay)
 stepper2 = Stepper(stepper_pins_2, delay)
 servo1 = Servo(17, 0)
+servo1.start()
 
 def measure_temp():
     temp = os.popen("vcgencmd measure_temp").readline()
@@ -41,13 +42,11 @@ def action():
         if(counter_disc_failure > 1000):
             main()
 
-    servo1.start()
     servo1.set_to_zero()
     servo1.move(12.5)
     servo1.move(2.5)
     servo1.move(12.5)
-    servo1.stop()
-
+    servo1.move(2.5)
     stepper2.hold()
 
     real_temp = measure_temp()[:3]
@@ -95,6 +94,6 @@ def main():
 if __name__ == '__main__':
     main()
 
-
+servo1.stop()
 GPIO.cleanup()
 
