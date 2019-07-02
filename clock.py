@@ -55,7 +55,7 @@ def action():
     #mixer.init()
     #sound = mixer.Sound("excavator_sound.wav")
     #sound.play()
-    
+    os.system("amixer cset numid=3 1")
     os.system("aplay /home/pi/cuckoo_clock/excavator_sound.wav")
     
     real_temp = measure_temp()[:3]
