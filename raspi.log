@@ -1,6 +1,3 @@
-
-2019-07-02 13:33:56,355 - ERROR - clock sensor failed!
-2019-07-02 13:34:15,310 - ERROR - clock sensor failed!
-2019-07-02 13:34:26,755 - ERROR - clock sensor failed!
-2019-07-02 13:40:56,016 - INFO - Temp: 51.
-2019-07-02 13:48:01,893 - INFO - Temp: 50.
+Playing WAVE '/home/pi/cuckoo_clock/excavator_sound.wav' : Signed 16 bit Little Endian, Rate 44100 Hz, Stereo
+Terminated
+Aborted by signal Terminated...

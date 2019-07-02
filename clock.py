@@ -52,11 +52,12 @@ def action():
     servo1.move(2.5)
     stepper2.hold()
     
-    mixer.init()
-    sound = mixer.Sound("excavator_sound.wav")
-    sound.play()
+    #mixer.init()
+    #sound = mixer.Sound("excavator_sound.wav")
+    #sound.play()
     
-
+    os.system("aplay /home/pi/cuckoo_clock/excavator_sound.wav")
+    
     real_temp = measure_temp()[:3]
     if(float(real_temp) >= 75.0):
         logging.error("rasperrypi overheating!")
