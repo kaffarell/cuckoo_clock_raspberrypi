@@ -77,8 +77,9 @@ def main():
     while(GPIO.input(2) == 0):
         clock_counter_failure += 1
         stepper1.step()
-        if(clock_counter_failure => 1000):
+        if(clock_counter_failure >= 512):
             logging.error("clock sensor failed!")
+            stepper1.hold()
             main()
     
     time.sleep(1)
