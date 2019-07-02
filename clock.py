@@ -51,6 +51,7 @@ def action():
 
     real_temp = measure_temp()[:3]
     if(float(real_temp) >= 70.0):
+        logging.error("overheating...")
         call("sudo shutdown -h now", shell=True)
     
     logging.info("Temp: %s", str(real_temp))
