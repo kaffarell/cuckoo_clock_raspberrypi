@@ -29,7 +29,9 @@ stepper1 = Stepper(stepper_pins_1, delay)
 stepper2 = Stepper(stepper_pins_2, delay)
 
 servo1 = Servo(17, 0)
+servo2 = Servo(13, 1)
 servo1.start()
+servo2.start()
 
 
 def measure_temp():
@@ -52,10 +54,13 @@ def action():
 
     servo1.set_to_zero()
     servo1.move(12.5)
-    servo1.move(3)
+    servo1.move(5)
     servo1.move(12.5)
-    servo1.move(3)
-
+    servo1.move(5)
+    
+    servo2.set_to_zero()
+    servo2.move(10)
+    servo2.move(5)
 
     os.system("amixer cset numid=3 1")
     os.system("aplay /home/pi/cuckoo_clock/excavator_sound.wav")
@@ -106,5 +111,6 @@ if __name__ == '__main__':
     main()
 
 servo1.stop()
+servo2.stop()
 GPIO.cleanup()
 
