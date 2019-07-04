@@ -19,7 +19,7 @@ class Servo:
                  
 
     def start(self):
-        self.servo_letter[self.servo_letter_index].start(2.5)
+        self.servo_letter[self.servo_letter_index].start(3)
         time.sleep(3)
 
 
@@ -35,6 +35,6 @@ class Servo:
         self.servo_letter[self.servo_letter_index].stop()
 
     def set_to_zero(self):
-       self.servo_letter[self.servo_letter_index].ChangeDutyCycle(2.5)
+       self.servo_letter[self.servo_letter_index].ChangeDutyCycle(3)
        time.sleep(1.5)
 
