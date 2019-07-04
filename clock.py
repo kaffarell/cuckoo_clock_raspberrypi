@@ -2,7 +2,6 @@ import RPi.GPIO as GPIO
 import time
 import os
 import logging
-from pygame import mixer
 from stepper import Stepper
 from subprocess import call
 from servo import Servo
@@ -52,9 +51,7 @@ def action():
     servo1.move(2.5)
     stepper2.hold()
     
-    #mixer.init()
-    #sound = mixer.Sound("excavator_sound.wav")
-    #sound.play()
+    
     os.system("amixer cset numid=3 1")
     os.system("aplay /home/pi/cuckoo_clock/excavator_sound.wav")
     
