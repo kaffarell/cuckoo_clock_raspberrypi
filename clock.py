@@ -4,7 +4,6 @@ import os
 import logging
 from stepper import Stepper
 from subprocess import call
-from servo import Servo
 
 
 
@@ -26,8 +25,7 @@ GPIO.setup(26, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
 stepper1 = Stepper(stepper_pins_1, delay)
 stepper2 = Stepper(stepper_pins_2, delay)
-servo1 = Servo(17, 0)
-servo1.start()
+
 
 def measure_temp():
     temp = os.popen("vcgencmd measure_temp").readline()
@@ -42,18 +40,16 @@ def action():
         counter_disc_failure += 1
         stepper2.step()
         if(counter_disc_failure > 1000):
+            stepper2.hold()
             main()
-
-    servo1.set_to_zero()
-    servo1.move(12.5)
-    servo1.move(2.5)
-    servo1.move(12.5)
-    servo1.move(2.5)
     stepper2.hold()
     
-    
-    os.system("amixer cset numid=3 1")
-    os.system("aplay /home/pi/cuckoo_clock/excavator_sound.wav")
+    GPIO.cleanup(17)
+
+    os.system("sudo python move_servo.py")
+
+    os.system("amixer cset numid=3 1 -q")
+    os.system("aplay /home/pi/cuckoo_clock/excavator_sound.wav -q")
     
     real_temp = measure_temp()[:3]
     if(float(real_temp) >= 75.0):
@@ -76,7 +72,7 @@ def main():
             print("hold")
             if(shutdown_counter >= 7):
                 logging.info("shutdown raspberry pi")
-                call("sudo shutdown -h now", shell=True)
+                call("sudo halt", shell=True)
 
     for counter_reed in range(100):
         stepper1.step()
@@ -100,6 +96,4 @@ def main():
 if __name__ == '__main__':
     main()
 
-servo1.stop()
-GPIO.cleanup()
 
