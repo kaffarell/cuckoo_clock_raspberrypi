@@ -1,11 +1,9 @@
 import RPi.GPIO as GPIO
 import time
 import os
-import pigpio
 import logging
 from stepper import Stepper
 from subprocess import call
-from servo import Servo
 
 
 
@@ -28,11 +26,6 @@ GPIO.setup(26, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 stepper1 = Stepper(stepper_pins_1, delay)
 stepper2 = Stepper(stepper_pins_2, delay)
 
-servo1 = Servo(17, 0)
-servo2 = Servo(13, 1)
-servo1.start()
-servo2.start()
-
 
 def measure_temp():
     temp = os.popen("vcgencmd measure_temp").readline()
@@ -50,20 +43,13 @@ def action():
             stepper2.hold()
             main()
     stepper2.hold()
-
-
-    servo1.set_to_zero()
-    servo1.move(12.5)
-    servo1.move(5)
-    servo1.move(12.5)
-    servo1.move(5)
     
-    servo2.set_to_zero()
-    servo2.move(10)
-    servo2.move(5)
+    GPIO.cleanup(17)
 
-    os.system("amixer cset numid=3 1")
-    os.system("aplay /home/pi/cuckoo_clock/excavator_sound.wav")
+    os.system("sudo python move_servo.py")
+
+    os.system("amixer cset numid=3 1 -q")
+    os.system("aplay /home/pi/cuckoo_clock/excavator_sound.wav -q")
     
     real_temp = measure_temp()[:3]
     if(float(real_temp) >= 75.0):
@@ -110,7 +96,4 @@ def main():
 if __name__ == '__main__':
     main()
 
-servo1.stop()
-servo2.stop()
-GPIO.cleanup()
 
