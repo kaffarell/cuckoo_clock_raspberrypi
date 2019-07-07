@@ -63,6 +63,7 @@ def action():
 def main():
     run_bool = True
     shutdown_counter = 0
+    '''
     while(run_bool):
         time.sleep(0.5)
         if(GPIO.input(22) == 1):
@@ -73,6 +74,9 @@ def main():
             if(shutdown_counter >= 7):
                 logging.info("shutdown raspberry pi")
                 call("sudo halt", shell=True)
+    '''
+
+    time.sleep(2)
 
     for counter_reed in range(100):
         stepper1.step()
