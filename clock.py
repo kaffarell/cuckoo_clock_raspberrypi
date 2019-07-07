@@ -78,8 +78,9 @@ def main():
             shutdown_counter += 1
             print("hold")
             if(shutdown_counter >= 7):
-                with open("visitors", "w+") as f:
+                with open("visitors", "a") as f:
                     f.write(str(visitors))
+                    f.write("\n")
 
                 logging.info("shutdown raspberry pi")
                 call("sudo halt", shell=True)
