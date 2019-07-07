@@ -51,7 +51,7 @@ def action():
     
     GPIO.cleanup(17)
 
-    os.system("sudo python move_servo.py")
+    os.system("sudo python \"move_servo.py\"")
 
     os.system("amixer cset numid=3 1 -q")
     os.system("aplay /home/pi/cuckoo_clock/excavator_sound.wav -q")
@@ -69,6 +69,7 @@ def main():
     global visitors
     run_bool = True
     shutdown_counter = 0
+    '''
     while(run_bool):
         time.sleep(0.5)
         if(GPIO.input(22) == 1):
@@ -84,6 +85,9 @@ def main():
 
                 logging.info("shutdown raspberry pi")
                 call("sudo halt", shell=True)
+    '''
+
+    time.sleep(2)
 
     for counter_reed in range(100):
         stepper1.step()
