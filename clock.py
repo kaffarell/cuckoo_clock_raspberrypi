@@ -5,7 +5,7 @@ import logging
 from stepper import Stepper
 from subprocess import call
 
-
+visitors = 0
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
@@ -25,6 +25,11 @@ GPIO.setup(26, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
 stepper1 = Stepper(stepper_pins_1, delay)
 stepper2 = Stepper(stepper_pins_2, delay)
+
+def write_visitors():
+    global visitors
+    visitors += 1
+    print(visitors)
 
 
 def measure_temp():
@@ -61,16 +66,21 @@ def action():
     main()
 
 def main():
+    global visitors
     run_bool = True
     shutdown_counter = 0
     while(run_bool):
         time.sleep(0.5)
         if(GPIO.input(22) == 1):
+            write_visitors()
             run_bool = False
         if(GPIO.input(26) == 1):
             shutdown_counter += 1
             print("hold")
             if(shutdown_counter >= 7):
+                with open("visitors", "w+") as f:
+                    f.write(str(visitors))
+
                 logging.info("shutdown raspberry pi")
                 call("sudo halt", shell=True)
 
