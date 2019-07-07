@@ -46,7 +46,7 @@ def action():
     
     GPIO.cleanup(17)
 
-    os.system("sudo python move_servo.py")
+    os.system("sudo python \"move_servo.py\"")
 
     os.system("amixer cset numid=3 1 -q")
     os.system("aplay /home/pi/cuckoo_clock/excavator_sound.wav -q")
