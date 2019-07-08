@@ -4,19 +4,39 @@
 import RPi.GPIO as GPIO
 import time
 
-servo_pin = 17
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
-GPIO.setup(servo_pin, GPIO.OUT)
+# Pins of the servos
+servo_pin_1 = 17
+servo_pin_2 = 13
 
-p = GPIO.PWM(servo_pin, 50)
-p.start(2.5)
-time.sleep(2)
-p.ChangeDutyCycle(12.5)
-time.sleep(3)
-p.ChangeDutyCycle(2.5)
-time.sleep(3)
-p.stop()
-GPIO.cleanup(servo_pin)
+def setup():
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
+    GPIO.setup(servo_pin_1, GPIO.OUT)
+    GPIO.setup(servo_pin_2, GPIO.OUT)
+    p = GPIO.PWM(servo_pin_1, 50)
+    g = GPIO.PWM(servo_pin_2, 50)
+    move()
 
+# whole movement of the servos
+def move():
+    p.start(2.5)
+    g.start(2.5)
+    time.sleep(0.5)
+    
+    p.ChangeDutyCycle(12.5)
+    g.ChangeDutyCycle(10)
+    time.sleep(3)
+    
+    p.ChangeDutyCycle(2.5)
+    g.ChangeDutyCycle(2.5)
+    time.sleep(3)
+    
+    p.stop()
+    g.stop()
+
+
+if __name__ == "__main__":
+    setup()
+    GPIO.cleanup(servo_pin_1)
+    GPIO.cleanup(servo_pin_2)
