@@ -54,8 +54,9 @@ def action():
     os.system("sudo python \"/home/pi/cuckoo_clock/move_servo.py\"")
 
     os.system("amixer -c 0 cset numid=3 1 -q")
-    # change path for different audio file
-    os.system("mplayer kuckuck.wav > /dev/null 2>&1")
+    # change path for different file
+    os.system("mplayer /home/pi/cuckoo_clock/kuckuck.wav > /dev/null 2>&1")
+
     
     # shutdown pi when temp is over 75
     real_temp = measure_temp()[:3]
