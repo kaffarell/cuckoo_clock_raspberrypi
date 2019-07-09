@@ -54,7 +54,7 @@ def action():
     os.system("sudo python \"/home/pi/cuckoo_clock/move_servo.py\"")
 
     os.system("amixer -c 0 cset numid=3 1 -q")
-    # change path for diff file
+    # change path for different audio file
     os.system("mplayer kuckuck.wav > /dev/null 2>&1")
     
     # shutdown pi when temp is over 75
@@ -81,6 +81,7 @@ def main():
             shutdown_counter += 1
             print("hold")
             if(shutdown_counter >= 7):
+                # when shutting down writing visitors to file
                 with open("visitors", "a") as f:
                     f.write(str(visitors))
                     f.write("\n")
