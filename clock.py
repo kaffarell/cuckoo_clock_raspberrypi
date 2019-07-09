@@ -49,13 +49,15 @@ def action():
             main()
     stepper2.hold()
     
-    GPIO.cleanup(17)
 
-    os.system("sudo python \"move_servo.py\"")
+    # start extern file to move servos
+    os.system("sudo python \"/home/pi/cuckoo_clock/move_servo.py\"")
 
-    os.system("amixer cset numid=3 1 -q")
-    os.system("aplay /home/pi/cuckoo_clock/excavator_sound.wav -q")
+    os.system("amixer -c 0 cset numid=3 1 -q")
+    # change path for diff file
+    os.system("mplayer kuckuck.wav > /dev/null 2>&1")
     
+    # shutdown pi when temp is over 75
     real_temp = measure_temp()[:3]
     if(float(real_temp) >= 75.0):
         logging.error("rasperrypi overheating!")

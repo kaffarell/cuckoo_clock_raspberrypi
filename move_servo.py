@@ -9,17 +9,16 @@ import time
 servo_pin_1 = 17
 servo_pin_2 = 13
 
-def setup():
+def main():
+    # setup :
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
     GPIO.setup(servo_pin_1, GPIO.OUT)
     GPIO.setup(servo_pin_2, GPIO.OUT)
     p = GPIO.PWM(servo_pin_1, 50)
     g = GPIO.PWM(servo_pin_2, 50)
-    move()
-
-# whole movement of the servos
-def move():
+    
+    # movement :
     p.start(2.5)
     g.start(2.5)
     time.sleep(0.5)
@@ -37,6 +36,6 @@ def move():
 
 
 if __name__ == "__main__":
-    setup()
+    main()
     GPIO.cleanup(servo_pin_1)
     GPIO.cleanup(servo_pin_2)

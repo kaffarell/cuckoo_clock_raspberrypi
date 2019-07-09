@@ -1,13 +1,1 @@
-python: can't open file 'move_servo.py': [Errno 2] No such file or directory
-python: can't open file 'move_servo.py': [Errno 2] No such file or directory
 Terminated
-2019-07-08 17:04:43,149 - ERROR - clock sensor failed!
-2019-07-08 17:05:06,019 - INFO - Temp: 42.
-2019-07-08 17:06:35,276 - ERROR - clock sensor failed!
-2019-07-08 17:07:44,188 - INFO - Temp: 44.
-2019-07-08 17:08:15,058 - INFO - Temp: 44.
-2019-07-08 17:08:46,947 - INFO - Temp: 44.
-2019-07-08 17:09:44,677 - INFO - Temp: 45.
-2019-07-08 17:11:00,607 - INFO - Temp: 45.
-2019-07-08 17:11:41,967 - INFO - Temp: 45.
-2019-07-08 17:12:30,867 - INFO - Temp: 45.
