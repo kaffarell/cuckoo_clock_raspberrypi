@@ -1,3 +1,4 @@
+#!/usr/local/bin/python
 import RPi.GPIO as GPIO
 import time
 import os
@@ -10,7 +11,7 @@ visitors = 0
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-logging.basicConfig(level=logging.DEBUG, filename='raspi.log', filemode='a', format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.DEBUG, filename='/home/pi/cuckoo_clock/raspi.log', filemode='a', format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 stepper_pins_1 = [3, 4, 18, 27]
@@ -62,7 +63,8 @@ def action():
     real_temp = measure_temp()[:3]
     if(float(real_temp) >= 75.0):
         logging.error("rasperrypi overheating!")
-        call("sudo shutdown -h now", shell=True)
+        #call("sudo /sbin/shutdown -h now")
+        os.system("/sbin/shutdown -h now")
     
     logging.info("Temp: %s", str(real_temp))
 
@@ -81,14 +83,15 @@ def main():
         if(GPIO.input(26) == 1):
             shutdown_counter += 1
             print("hold")
-            if(shutdown_counter >= 7):
+            if(shutdown_counter == 7):
                 # when shutting down writing visitors to file
-                with open("visitors", "a") as f:
+                with open("/home/pi/cuckoo_clock/visitors", "a") as f:
                     f.write(str(visitors))
                     f.write("\n")
-
+                
                 logging.info("shutdown raspberry pi")
-                call("sudo halt", shell=True)
+                os.system("/sbin/shutdown -h now")
+                
 
     for counter_reed in range(100):
         stepper1.step()
