@@ -55,7 +55,7 @@ def action():
 
     os.system("amixer -c 0 cset numid=3 1 -q")
     # change path for diff file
-    os.system("mplayer kuckuck.wav > /dev/null 2>&1")
+    os.system("mplayer /home/pi/cuckoo_clock/kuckuck.wav > /dev/null 2>&1")
     
     # shutdown pi when temp is over 75
     real_temp = measure_temp()[:3]
