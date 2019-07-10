@@ -16,16 +16,21 @@ logging.basicConfig(level=logging.DEBUG, filename='/home/pi/cuckoo_clock/raspi.l
 
 stepper_pins_1 = [3, 4, 18, 27]
 stepper_pins_2 = [23, 24, 10, 9]
-delay = 0.001
+stepper_delay = 0.001
+
+# reed sensor clock
 GPIO.setup(2, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+# reed sensor disc
 GPIO.setup(11, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 
+# start button
 GPIO.setup(22, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+# shutdown button
 GPIO.setup(26, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
 
-stepper1 = Stepper(stepper_pins_1, delay)
-stepper2 = Stepper(stepper_pins_2, delay)
+stepper1 = Stepper(stepper_pins_1, stepper_delay)
+stepper2 = Stepper(stepper_pins_2, stepper_delay)
 
 def write_visitors():
     global visitors
@@ -53,13 +58,13 @@ def action():
 
     # start extern file to move servos
     os.system("sudo python \"/home/pi/cuckoo_clock/move_servo.py\"")
-
+    
+    # set jack as output and play file
     os.system("amixer -c 0 cset numid=3 1 -q")
-    # change path for different file
     os.system("mplayer /home/pi/cuckoo_clock/kuckuck.wav > /dev/null 2>&1")
 
     
-    # shutdown pi when temp is over 75
+    # shutdown pi when temperature is over 75
     real_temp = measure_temp()[:3]
     if(float(real_temp) >= 75.0):
         logging.error("rasperrypi overheating!")
@@ -77,9 +82,11 @@ def main():
     
     while(run_bool):
         time.sleep(0.5)
+        # start button
         if(GPIO.input(22) == 1):
             write_visitors()
             run_bool = False
+        # shutdown button
         if(GPIO.input(26) == 1):
             shutdown_counter += 1
             print("hold")
