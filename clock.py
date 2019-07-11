@@ -32,13 +32,13 @@ GPIO.setup(26, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 stepper1 = Stepper(stepper_pins_1, stepper_delay)
 stepper2 = Stepper(stepper_pins_2, stepper_delay)
 
-def write_visitors():
+def increase_visitors():
     global visitors
     visitors += 1
     print(visitors)
 
 
-def measure_temp():
+def get_temp():
     temp = os.popen("vcgencmd measure_temp").readline()
     return(temp.replace("temp=", ""))
 
@@ -65,27 +65,26 @@ def action():
 
     
     # shutdown pi when temperature is over 75
-    real_temp = measure_temp()[:3]
+    real_temp = get_temp()[:3]
     if(float(real_temp) >= 75.0):
         logging.error("rasperrypi overheating!")
         #call("sudo /sbin/shutdown -h now")
         os.system("/sbin/shutdown -h now")
     
     logging.info("Temp: %s", str(real_temp))
-
     main()
 
 def main():
     global visitors
-    run_bool = True
+    main_run_bool = True
     shutdown_counter = 0
     
-    while(run_bool):
+    while(main_run_bool):
         time.sleep(0.5)
         # start button
         if(GPIO.input(22) == 1):
-            write_visitors()
-            run_bool = False
+            increase_visitors()
+            main_run_bool = False
         # shutdown button
         if(GPIO.input(26) == 1):
             shutdown_counter += 1
@@ -114,7 +113,7 @@ def main():
     
     time.sleep(1)
 
-    for counter_last_tick in range(43):
+    for clock_last_tick in range(43):
         stepper1.step()
 
     action()
