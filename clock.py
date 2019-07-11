@@ -11,7 +11,7 @@ visitors = 0
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-logging.basicConfig(level=logging.DEBUG, filename='/home/pi/cuckoo_clock/raspi.log', filemode='a', format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.DEBUG, filename='/home/pi/cuckoo_clock_raspberrypi/raspi.log', filemode='a', format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 stepper_pins_1 = [3, 4, 18, 27]
@@ -57,11 +57,11 @@ def action():
     
 
     # start extern file to move servos
-    os.system("sudo python \"/home/pi/cuckoo_clock/move_servo.py\"")
+    os.system("sudo python \"/home/pi/cuckoo_clock_raspberrypi/move_servo.py\"")
     
     # set jack as output and play file
     os.system("amixer -c 0 cset numid=3 1 -q")
-    os.system("mplayer /home/pi/cuckoo_clock/kuckuck.wav > /dev/null 2>&1")
+    os.system("mplayer /home/pi/cuckoo_clock_raspberrypi/kuckuck.wav > /dev/null 2>&1")
 
     
     # shutdown pi when temperature is over 75
