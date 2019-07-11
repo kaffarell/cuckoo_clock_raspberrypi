@@ -5,6 +5,10 @@ import os
 import logging
 from stepper import Stepper
 from subprocess import call
+<<<<<<< HEAD
+=======
+
+>>>>>>> de098b2... fix of servo jittering servo was jittering. externally started new file that startes the servo and stops it after the action. External file because its not possible to start servo again in same script.
 
 visitors = 0
 
@@ -32,11 +36,14 @@ GPIO.setup(26, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 stepper1 = Stepper(stepper_pins_1, stepper_delay)
 stepper2 = Stepper(stepper_pins_2, stepper_delay)
 
+<<<<<<< HEAD
 def write_visitors():
     global visitors
     visitors += 1
     print(visitors)
 
+=======
+>>>>>>> de098b2... fix of servo jittering servo was jittering. externally started new file that startes the servo and stops it after the action. External file because its not possible to start servo again in same script.
 
 def measure_temp():
     temp = os.popen("vcgencmd measure_temp").readline()
@@ -54,6 +61,7 @@ def action():
             stepper2.hold()
             main()
     stepper2.hold()
+<<<<<<< HEAD
     
 
     # start extern file to move servos
@@ -63,6 +71,15 @@ def action():
     os.system("amixer -c 0 cset numid=3 1 -q")
     os.system("mplayer /home/pi/cuckoo_clock/kuckuck.wav > /dev/null 2>&1")
 
+=======
+    
+    GPIO.cleanup(17)
+
+    os.system("sudo python move_servo.py")
+
+    os.system("amixer cset numid=3 1 -q")
+    os.system("aplay /home/pi/cuckoo_clock/excavator_sound.wav -q")
+>>>>>>> de098b2... fix of servo jittering servo was jittering. externally started new file that startes the servo and stops it after the action. External file because its not possible to start servo again in same script.
     
     # shutdown pi when temperature is over 75
     real_temp = measure_temp()[:3]

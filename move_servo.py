@@ -4,6 +4,7 @@
 import RPi.GPIO as GPIO
 import time
 
+<<<<<<< HEAD
 
 # Pins of the servos
 servo_pin_1 = 17
@@ -39,3 +40,21 @@ if __name__ == "__main__":
     main()
     GPIO.cleanup(servo_pin_1)
     GPIO.cleanup(servo_pin_2)
+=======
+servo_pin = 17
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+GPIO.setup(servo_pin, GPIO.OUT)
+
+p = GPIO.PWM(servo_pin, 50)
+p.start(2.5)
+time.sleep(2)
+p.ChangeDutyCycle(12.5)
+time.sleep(3)
+p.ChangeDutyCycle(2.5)
+time.sleep(3)
+p.stop()
+GPIO.cleanup(servo_pin)
+
+>>>>>>> de098b2... fix of servo jittering servo was jittering. externally started new file that startes the servo and stops it after the action. External file because its not possible to start servo again in same script.
