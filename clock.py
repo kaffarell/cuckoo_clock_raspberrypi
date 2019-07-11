@@ -91,9 +91,12 @@ def main():
             print("hold")
             if(shutdown_counter == 7):
                 # when shutting down writing visitors to file
-                with open("/home/pi/cuckoo_clock/visitors", "a") as f:
-                    f.write(str(visitors))
-                    f.write("\n")
+                try:
+                    with open("/home/pi/cuckoo_clock_raspberrypi/visitors", "a") as f:
+                        f.write(str(visitors))
+                        f.write("\n")
+                except Expression as e:
+                    logging.error("%s", e)
                 
                 logging.info("shutdown raspberry pi")
                 os.system("/sbin/shutdown -h now")
