@@ -85,7 +85,6 @@ def action():
     real_temp = get_temp()[:3]
     if(float(real_temp) >= 75.0):
         logging.error("rasperrypi overheating!")
-        #call("sudo /sbin/shutdown -h now")
         os.system("/sbin/shutdown -h now")
     
     logging.info("Temp: %s", str(real_temp))
