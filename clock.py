@@ -16,6 +16,8 @@ logging.basicConfig(level=logging.DEBUG, filename='/home/pi/cuckoo_clock_raspber
 
 stepper_pins_1 = [3, 4, 18, 27]
 stepper_pins_2 = [23, 24, 10, 9]
+stepper_pins_3 = [21, 20, 16, 12]
+stepper_pins_4 = [19, 6, 5, 7]
 stepper_delay = 0.001
 
 # reed sensor clock
@@ -29,8 +31,10 @@ GPIO.setup(22, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 GPIO.setup(26, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
 
-stepper1 = Stepper(stepper_pins_1, stepper_delay)
-stepper2 = Stepper(stepper_pins_2, stepper_delay)
+clock_motor = Stepper(stepper_pins_1, stepper_delay)
+scheibe_motor = Stepper(stepper_pins_2, stepper_delay)
+stepper3 = Stepper(stepper_pins_3, stepper_delay)
+stepper4 = Stepper(stepper_pins_4, stepper_delay)
 
 def increase_visitors():
     global visitors
@@ -43,17 +47,30 @@ def get_temp():
     return(temp.replace("temp=", ""))
 
 def action():
-    stepper1.hold()
+    clock_motor.hold()
     for counter_disc in  range(100):
-        stepper2.step()
+        scheibe_motor.step()
     counter_disc_failure = 0
     while(GPIO.input(11) == 1):
         counter_disc_failure += 1
-        stepper2.step()
+        scheibe_motor.step()
         if(counter_disc_failure > 1000):
-            stepper2.hold()
+            scheibe_motor.hold()
             main()
-    stepper2.hold()
+    scheibe_motor.hold()
+
+    i = 0
+    
+    for i in range(500):
+        stepper3.step()
+    stepper3.hold()
+    
+    i = 0
+
+    for i in range(500):
+        stepper4.step()
+    stepper4.hold()
+
     
 
     # start extern file to move servos
@@ -103,21 +120,21 @@ def main():
                 
 
     for counter_reed in range(100):
-        stepper1.step()
+        clock_motor.step()
     
     clock_counter_failure = 0
     while(GPIO.input(2) == 0):
         clock_counter_failure += 1
-        stepper1.step()
+        clock_motor.step()
         if(clock_counter_failure >= 512):
             logging.error("clock sensor failed!")
-            stepper1.hold()
+            clock_motor.hold()
             main()
     
     time.sleep(1)
 
     for clock_last_tick in range(43):
-        stepper1.step()
+        clock_motor.step()
 
     action()
 
