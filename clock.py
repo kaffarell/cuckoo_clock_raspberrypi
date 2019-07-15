@@ -32,7 +32,7 @@ GPIO.setup(26, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
 
 clock_motor = Stepper(stepper_pins_1, stepper_delay)
-scheibe_motor = Stepper(stepper_pins_2, stepper_delay)
+disk_motor = Stepper(stepper_pins_2, stepper_delay)
 stepper3 = Stepper(stepper_pins_3, stepper_delay)
 stepper4 = Stepper(stepper_pins_4, stepper_delay)
 
@@ -49,15 +49,15 @@ def get_temp():
 def action():
     clock_motor.hold()
     for counter_disc in  range(100):
-        scheibe_motor.step()
+        disk_motor.step()
     counter_disc_failure = 0
     while(GPIO.input(11) == 1):
         counter_disc_failure += 1
-        scheibe_motor.step()
+        disk_motor.step()
         if(counter_disc_failure > 1000):
-            scheibe_motor.hold()
+            disk_motor.hold()
             main()
-    scheibe_motor.hold()
+    disk_motor.hold()
 
     i = 0
     
