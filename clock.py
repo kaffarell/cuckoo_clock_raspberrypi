@@ -4,7 +4,6 @@ import time
 import os
 import logging
 from stepper import Stepper
-from subprocess import call
 
 visitors = 0
 
@@ -64,14 +63,11 @@ def action():
     for i in range(500):
         stepper3.step()
     stepper3.hold()
-    
-    i = 0
-
+    print("i = %d", i)
     for i in range(500):
         stepper4.step()
     stepper4.hold()
 
-    
 
     # start extern file to move servos
     os.system("sudo python \"/home/pi/cuckoo_clock_raspberrypi/move_servo.py\"")
