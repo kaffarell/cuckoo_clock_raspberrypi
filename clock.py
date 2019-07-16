@@ -48,16 +48,6 @@ def get_temp():
 
 def action():
     clock_motor.hold()
-    for counter_disc in  range(100):
-        disk_motor.step()
-    counter_disc_failure = 0
-    while(GPIO.input(11) == 1):
-        counter_disc_failure += 1
-        disk_motor.step()
-        if(counter_disc_failure > 1000):
-            disk_motor.hold()
-            main()
-    disk_motor.hold()
 
     i = 0
     
@@ -71,16 +61,28 @@ def action():
         stepper4.step()
     stepper4.hold()
 
+
     
+    # set jack as output and play file
+    os.system("amixer -c 0 cset numid=3 1 -q &")
+    os.system("mplayer /home/pi/cuckoo_clock_raspberrypi/kuckuck.wav > /dev/null 2>&1 &")
+
+    for counter_disc in  range(100):
+        disk_motor.step()
+    counter_disc_failure = 0
+    while(GPIO.input(11) == 1):
+        counter_disc_failure += 1
+        disk_motor.step()
+        if(counter_disc_failure > 1000):
+            disk_motor.hold()
+            main()
+    disk_motor.hold()
 
     # start extern file to move servos
     os.system("sudo python \"/home/pi/cuckoo_clock_raspberrypi/move_servo.py\"")
     
-    # set jack as output and play file
-    os.system("amixer -c 0 cset numid=3 1 -q")
-    os.system("mplayer /home/pi/cuckoo_clock_raspberrypi/kuckuck.wav > /dev/null 2>&1")
 
-    
+
     # shutdown pi when temperature is over 75
     real_temp = get_temp()[:3]
     if(float(real_temp) >= 75.0):
