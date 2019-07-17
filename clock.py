@@ -46,10 +46,33 @@ def get_temp():
     return(temp.replace("temp=", ""))
 
 def action():
-    clock_motor.hold()
 
-    i = 0
+    '''
+    for counter_stepper3 in  range(100):
+        stepper3.step()
+    stepper3_failure = 0
+    while(GPIO.input(11) == 1):
+        stepper3_failure += 1
+        stepper3.step()
+        if(stepper3_failure > 512):
+            stepper3.hold()
+            main()
+    stepper3.hold()
     
+    for counter_stepper4 in  range(100):
+        stepper4.step()
+    counter_disc_failure = 0
+    while(GPIO.input(11) == 1):
+        stepper4_failure += 1
+        stepper4.step()
+        if(stepper4_failure > 512):
+            stepper4.hold()
+            main()
+    stepper4.hold()
+    '''
+
+
+    i = 0 
     for i in range(500):
         stepper3.step()
     stepper3.hold()
@@ -71,7 +94,7 @@ def action():
     while(GPIO.input(11) == 1):
         counter_disc_failure += 1
         disk_motor.step()
-        if(counter_disc_failure > 1000):
+        if(counter_disc_failure > 512):
             disk_motor.hold()
             main()
     disk_motor.hold()
@@ -134,6 +157,7 @@ def main():
     for clock_last_tick in range(43):
         clock_motor.step()
 
+    clock_motor.hold()
     action()
 
 if __name__ == '__main__':
