@@ -5,6 +5,7 @@ import os
 import logging as log
 from stepper import Stepper
 
+
 visitors = 0
 
 GPIO.setmode(GPIO.BCM)
@@ -79,7 +80,6 @@ def action():
     os.system("sudo python \"/home/pi/cuckoo_clock_raspberrypi/move_servo.py\"")
     
 
-
     # shutdown pi when temperature is over 75
     real_temp = get_temp()[:3]
     if(float(real_temp) >= 75.0):
@@ -138,5 +138,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-
 
