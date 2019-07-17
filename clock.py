@@ -52,7 +52,8 @@ def action():
     for i in range(500):
         stepper3.step()
     stepper3.hold()
-    print("i = %d", i)
+    
+    i = 0
     for i in range(500):
         stepper4.step()
     stepper4.hold()
@@ -109,11 +110,11 @@ def main():
                     with open("/home/pi/cuckoo_clock_raspberrypi/visitors", "a") as f:
                         f.write(str(visitors))
                         f.write("\n")
-                except Expression as e:
+                except Exception as e:
                     log.error("%s", e)
                 
                 log.info("shutdown raspberry pi")
-                os.system("/sbin/shutdown -h now")
+                os.system("sudo /sbin/shutdown -h now")
                 
 
     for counter_reed in range(100):
