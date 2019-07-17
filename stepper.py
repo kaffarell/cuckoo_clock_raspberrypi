@@ -1,6 +1,6 @@
 import RPi.GPIO as GPIO
 import time
-import logging
+import logging as log
 
 class Stepper:
        
@@ -14,8 +14,8 @@ class Stepper:
                 GPIO.setup(pin, GPIO.OUT)
                 GPIO.output(pin, 0)
             except Exception as e:
-                logging.error("%s", e)
-                logging.error("Pin %d not working", pin)
+                log.error("%s", e)
+                log.error("Pin %d not working", pin)
 
         steps_seq = [[1,0,0,0], [1,1,0,0], [0,1,0,0], [0,1,1,0], [0,0,1,0], [0,0,1,1], [0,0,0,1], [1,0,0,1]]
 

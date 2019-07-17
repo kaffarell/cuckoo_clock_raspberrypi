@@ -1,6 +1,6 @@
 import RPi.GPIO as GPIO
 import time
-import logging
+import logging as log
 import numpy
 
 
@@ -14,8 +14,8 @@ class Servo:
             GPIO.setup(servo_pin, GPIO.OUT)
             self.servo_letter[servo_letter_index] = GPIO.PWM(servo_pin, 50)
         except Exception as e:
-            logging.error("%s", e)
-            logging.error("Pin %s not working", servo_pin)
+            log.error("%s", e)
+            log.error("Pin %s not working", servo_pin)
                  
 
     def start(self):

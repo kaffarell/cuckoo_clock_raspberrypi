@@ -1,4 +1,3 @@
-
 #ChangeDutyCycle: 2.5 = 0degree 7.5 = 90degree 12.5 = 180degree
 
 import RPi.GPIO as GPIO
@@ -34,8 +33,8 @@ def main():
     p.stop()
     g.stop()
 
-
 if __name__ == "__main__":
     main()
     GPIO.cleanup(servo_pin_1)
     GPIO.cleanup(servo_pin_2)
+    

@@ -2,7 +2,7 @@
 import RPi.GPIO as GPIO
 import time
 import os
-import logging
+import logging as log
 from stepper import Stepper
 
 visitors = 0
@@ -10,30 +10,29 @@ visitors = 0
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-logging.basicConfig(level=logging.DEBUG, filename='/home/pi/cuckoo_clock_raspberrypi/raspi.log', filemode='a', format='%(asctime)s - %(levelname)s - %(message)s')
+log.basicConfig(level=log.DEBUG, filename='/home/pi/cuckoo_clock_raspberrypi/raspi.log', filemode='a', format='%(asctime)s - %(levelname)s - %(message)s')
 
-
-stepper_pins_1 = [3, 4, 18, 27]
-stepper_pins_2 = [23, 24, 10, 9]
-stepper_pins_3 = [21, 20, 16, 12]
-stepper_pins_4 = [19, 6, 5, 7]
+# first number is 3
+clock_motor_pins = [4, 4, 18, 27]
+disk_motor_pins = [23, 24, 10, 9]
+stepper3_pins = [21, 20, 16, 12]
+stepper4_pins = [19, 6, 5, 7]
 stepper_delay = 0.001
 
 # reed sensor clock
 GPIO.setup(2, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 # reed sensor disc
 GPIO.setup(11, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-
 # start button
 GPIO.setup(22, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 # shutdown button
 GPIO.setup(26, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
 
-clock_motor = Stepper(stepper_pins_1, stepper_delay)
-disk_motor = Stepper(stepper_pins_2, stepper_delay)
-stepper3 = Stepper(stepper_pins_3, stepper_delay)
-stepper4 = Stepper(stepper_pins_4, stepper_delay)
+clock_motor = Stepper(clock_motor_pins, stepper_delay)
+disk_motor = Stepper(disk_motor_pins, stepper_delay)
+stepper3 = Stepper(stepper3_pins, stepper_delay)
+stepper4 = Stepper(stepper4_pins, stepper_delay)
 
 def increase_visitors():
     global visitors
@@ -83,10 +82,10 @@ def action():
     # shutdown pi when temperature is over 75
     real_temp = get_temp()[:3]
     if(float(real_temp) >= 75.0):
-        logging.error("rasperrypi overheating!")
+        log.error("rasperrypi overheating!")
         os.system("/sbin/shutdown -h now")
     
-    logging.info("Temp: %s", str(real_temp))
+    log.info("Temp: %s", str(real_temp))
     main()
 
 def main():
@@ -111,9 +110,9 @@ def main():
                         f.write(str(visitors))
                         f.write("\n")
                 except Expression as e:
-                    logging.error("%s", e)
+                    log.error("%s", e)
                 
-                logging.info("shutdown raspberry pi")
+                log.info("shutdown raspberry pi")
                 os.system("/sbin/shutdown -h now")
                 
 
@@ -125,7 +124,7 @@ def main():
         clock_counter_failure += 1
         clock_motor.step()
         if(clock_counter_failure >= 512):
-            logging.error("clock sensor failed!")
+            log.error("clock sensor failed!")
             clock_motor.hold()
             main()
     
