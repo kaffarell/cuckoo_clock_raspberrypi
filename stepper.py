@@ -10,12 +10,8 @@ class Stepper:
 
     def step(self):
         for pin in self.stepper_pins:
-            try:
-                GPIO.setup(pin, GPIO.OUT)
-                GPIO.output(pin, 0)
-            except Exception as e:
-                log.error("%s", e)
-                log.error("Pin %d not working", pin)
+            GPIO.setup(pin, GPIO.OUT)
+            GPIO.output(pin, 0)
 
         steps_seq = [[1,0,0,0], [1,1,0,0], [0,1,0,0], [0,1,1,0], [0,0,1,0], [0,0,1,1], [0,0,0,1], [1,0,0,1]]
 

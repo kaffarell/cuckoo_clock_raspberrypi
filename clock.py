@@ -12,8 +12,8 @@ GPIO.setwarnings(False)
 
 log.basicConfig(level=log.DEBUG, filename='/home/pi/cuckoo_clock_raspberrypi/raspi.log', filemode='a', format='%(asctime)s - %(levelname)s - %(message)s')
 
-#first number is 3
-clock_motor_pins = [40, 4, 18, 27]
+
+clock_motor_pins = [3, 4, 18, 27]
 disk_motor_pins = [23, 24, 10, 9]
 stepper3_pins = [21, 20, 16, 12]
 stepper4_pins = [19, 6, 5, 7]
