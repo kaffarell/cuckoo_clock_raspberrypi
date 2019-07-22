@@ -20,6 +20,10 @@ stepper3_pins = [21, 20, 16, 12]
 stepper4_pins = [19, 6, 5, 7]
 stepper_delay = 0.001
 
+# reed sensor stepper3
+GPIO.setup(14, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+# reed sensor stepper4
+GPIO.setup(15, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 # reed sensor clock
 GPIO.setup(2, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 # reed sensor disc
@@ -46,47 +50,40 @@ def get_temp():
     return(temp.replace("temp=", ""))
 
 def action():
-
-    '''
+    stepper3_failure = 0
     for counter_stepper3 in  range(100):
         stepper3.step()
     stepper3_failure = 0
-    while(GPIO.input(11) == 1):
+    while(GPIO.input(14) == 0):
         stepper3_failure += 1
         stepper3.step()
+        '''
         if(stepper3_failure > 512):
             stepper3.hold()
             main()
+        '''
     stepper3.hold()
     
+    stepper4_failure = 0
     for counter_stepper4 in  range(100):
         stepper4.step()
     counter_disc_failure = 0
-    while(GPIO.input(11) == 1):
+    while(GPIO.input(15) == 0):
         stepper4_failure += 1
         stepper4.step()
+        '''
         if(stepper4_failure > 512):
             stepper4.hold()
             main()
+        '''
     stepper4.hold()
-    '''
-
-
-    i = 0 
-    for i in range(500):
-        stepper3.step()
-    stepper3.hold()
     
-    i = 0
-    for i in range(500):
-        stepper4.step()
-    stepper4.hold()
-
 
     
     # set jack as output and play file
     os.system("amixer -c 0 cset numid=3 1 -q &")
-    os.system("mplayer /home/pi/cuckoo_clock_raspberrypi/kuckuck.wav > /dev/null 2>&1 &")
+    os.system("ffplay /home/pi/cuckoo_clock_raspberrypi/kuckuck.wav -autoexit > /dev/null 2>&1 &")
+    
 
     for counter_disc in  range(100):
         disk_motor.step()
