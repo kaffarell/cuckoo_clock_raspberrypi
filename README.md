@@ -14,7 +14,7 @@ Standard Raspbian installation
 For sound:  
 
 ```
-sudo apt install mplayer
+sudo apt install ffplay
 ```
 
 and optional: 
