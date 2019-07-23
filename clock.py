@@ -42,7 +42,6 @@ stepper4 = Stepper(stepper4_pins, stepper_delay)
 def increase_visitors():
     global visitors
     visitors += 1
-    print(visitors)
 
 
 def get_temp():
@@ -50,6 +49,7 @@ def get_temp():
     return(temp.replace("temp=", ""))
 
 def action():
+    
     stepper3_failure = 0
     for counter_stepper3 in  range(100):
         stepper3.step()
@@ -57,13 +57,15 @@ def action():
     while(GPIO.input(14) == 0):
         stepper3_failure += 1
         stepper3.step()
-        '''
-        if(stepper3_failure > 512):
+        
+        if(stepper3_failure >= 1000):
+            log.error("reed sensor stepper3 failed!")
             stepper3.hold()
-            main()
-        '''
+            break
+        
     stepper3.hold()
-    
+
+    '''reserve motor
     stepper4_failure = 0
     for counter_stepper4 in  range(100):
         stepper4.step()
@@ -71,13 +73,13 @@ def action():
     while(GPIO.input(15) == 0):
         stepper4_failure += 1
         stepper4.step()
-        '''
-        if(stepper4_failure > 512):
+        
+        if(stepper4_failure > 1000):
+            log.error("reed sensor stepper3 failed!")
             stepper4.hold()
             main()
-        '''
     stepper4.hold()
-    
+    '''
 
     
     # set jack as output and play file
@@ -91,9 +93,11 @@ def action():
     while(GPIO.input(11) == 1):
         counter_disc_failure += 1
         disk_motor.step()
-        if(counter_disc_failure > 512):
+        if(counter_disc_failure >= 1000):
+            log.error("reed sensor disc failed!")
             disk_motor.hold()
-            main()
+            break
+
     disk_motor.hold()
 
     # start extern file to move servos
@@ -144,10 +148,10 @@ def main():
     while(GPIO.input(2) == 0):
         clock_counter_failure += 1
         clock_motor.step()
-        if(clock_counter_failure >= 512):
-            log.error("clock sensor failed!")
+        if(clock_counter_failure >= 1000):
+            log.error("reed sensor clock failed!")
             clock_motor.hold()
-            main()
+            break
     
     time.sleep(1)
 
