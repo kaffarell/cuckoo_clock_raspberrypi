@@ -39,6 +39,8 @@ disk_motor = Stepper(disk_motor_pins, stepper_delay)
 stepper3 = Stepper(stepper3_pins, stepper_delay)
 stepper4 = Stepper(stepper4_pins, stepper_delay)
 
+clock_motor.hold()
+
 def increase_visitors():
     global visitors
     visitors += 1
