@@ -13,6 +13,7 @@ GPIO.setwarnings(False)
 
 log.basicConfig(level=log.DEBUG, filename='/home/pi/cuckoo_clock_raspberrypi/raspi.log', filemode='a', format='%(asctime)s - %(levelname)s - %(message)s')
 
+log.info("startup raspberry pi")
 
 clock_motor_pins = [3, 4, 18, 27]
 disk_motor_pins = [23, 24, 10, 9]
