@@ -120,7 +120,6 @@ def action():
     main()
 
 def main():
-    global visitors
     main_run_bool = True
     shutdown_counter = 0
     
@@ -138,6 +137,7 @@ def main():
                 # when shutting down writing visitors to file
                 try:
                     with open("/home/pi/cuckoo_clock_raspberrypi/visitors", "a") as f:
+                        global visitors
                         f.write(str(visitors))
                         f.write("\n")
                 except Exception as e:
