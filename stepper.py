@@ -21,6 +21,11 @@ class Stepper:
             for pin in range(4):
                 GPIO.output(self.stepper_pins[pin], steps_seq[step][pin])
             time.sleep(self.delay)
+    
     def hold(self):
+        for pin in self.stepper_pins:
+            GPIO.setup(pin, GPIO.OUT)
+            GPIO.output(pin, 0)
+
         for pin1 in range(4):
             GPIO.output(self.stepper_pins[pin1], 0)
