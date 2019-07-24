@@ -41,6 +41,9 @@ stepper3 = Stepper(stepper3_pins, stepper_delay)
 stepper4 = Stepper(stepper4_pins, stepper_delay)
 
 clock_motor.hold()
+disk_motor.hold()
+stepper3.hold()
+stepper4.hold()
 
 def increase_visitors():
     global visitors
