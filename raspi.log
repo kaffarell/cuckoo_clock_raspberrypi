@@ -1,0 +1,6 @@
+2019-07-24 16:52:37,121 - INFO - startup raspberry pi
+2019-07-24 16:53:42,709 - ERROR - reed sensor stepper3 failed!
+2019-07-24 16:53:54,051 - INFO - Temp: 49.
+2019-07-24 17:00:06,463 - INFO - shutdown raspberry pi
+2019-07-24 17:00:17,903 - INFO - startup raspberry pi
+Terminated
