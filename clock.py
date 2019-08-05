@@ -55,7 +55,12 @@ def get_temp():
     return(temp.replace("temp=", ""))
 
 def action():
-    
+    # set jack as output and play file
+    os.system("amixer -c 0 cset numid=3 1 -q &")
+    os.system("ffplay /home/pi/cuckoo_clock_raspberrypi/vielen_dank.mp3 -autoexit > /dev/null 2>&1 &")
+
+
+    # move stepper3
     stepper3_failure = 0
     for counter_stepper3 in  range(100):
         stepper3.step()
@@ -70,6 +75,8 @@ def action():
             break
         
     stepper3.hold()
+
+    time.sleep(3)
 
     '''reserve motor
     stepper4_failure = 0
@@ -90,9 +97,9 @@ def action():
     
     # set jack as output and play file
     os.system("amixer -c 0 cset numid=3 1 -q &")
-    os.system("ffplay /home/pi/cuckoo_clock_raspberrypi/kuckuck.wav -autoexit > /dev/null 2>&1 &")
+    os.system("ffplay /home/pi/cuckoo_clock_raspberrypi/traffic_noise.mp3 -autoexit > /dev/null 2>&1 &")
     
-
+    # move disc
     for counter_disc in  range(100):
         disk_motor.step()
     counter_disc_failure = 0
@@ -125,10 +132,12 @@ def main():
     
     while(main_run_bool):
         time.sleep(0.5)
+
         # start button
         if(GPIO.input(22) == 1):
             increase_visitors()
             main_run_bool = False
+
         # shutdown button
         if(GPIO.input(26) == 1):
             shutdown_counter += 1
@@ -146,7 +155,7 @@ def main():
                 log.info("shutdown raspberry pi")
                 os.system("sudo /sbin/shutdown -h now")
                 
-
+    # move clock
     for counter_reed in range(100):
         clock_motor.step()
     
@@ -161,6 +170,7 @@ def main():
     
     time.sleep(1)
 
+    # clock last 5 minutes
     for clock_last_tick in range(43):
         clock_motor.step()
 
