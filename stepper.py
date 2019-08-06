@@ -10,14 +10,17 @@ class Stepper:
         self.stepper_pins = stepper_pins
         self.delay = delay
 
-    def step(self):
+    def step(self, mode):
         for pin in self.stepper_pins:
             GPIO.setup(pin, GPIO.OUT)
             GPIO.output(pin, 0)
+        
+        if mode == "high-speed":
+            steps_seq = [[1,0,0,0], [1,1,0,0], [0,1,0,0], [0,1,1,0], [0,0,1,0], [0,0,1,1], [0,0,0,1], [1,0,0,1]]
+        elif mode == "low-speed":
+            steps_seq = [[1,0,0,0], [0,1,0,0], [0,0,1,0], [0,0,0,1]]
 
-        steps_seq = [[1,0,0,0], [1,1,0,0], [0,1,0,0], [0,1,1,0], [0,0,1,0], [0,0,1,1], [0,0,0,1], [1,0,0,1]]
-
-        for step in range(8):
+        for step in range(len(steps_seq)):
             for pin in range(4):
                 GPIO.output(self.stepper_pins[pin], steps_seq[step][pin])
             time.sleep(self.delay)

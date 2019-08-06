@@ -17,13 +17,13 @@ log.info("startup raspberry pi")
 
 clock_motor_pins = [3, 4, 18, 27]
 disk_motor_pins = [23, 24, 10, 9]
-stepper3_pins = [21, 20, 16, 12]
-stepper4_pins = [19, 6, 5, 7]
+bigdisc_motor_pins = [21, 20, 16, 12]
+hotel_motor_pins = [19, 6, 5, 7]
 stepper_delay = 0.001
 
-# reed sensor stepper3
+# reed sensor big disc
 GPIO.setup(14, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-# reed sensor stepper4
+# reed sensor hotel
 GPIO.setup(15, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 # reed sensor clock
 GPIO.setup(2, GPIO.IN, pull_up_down = GPIO.PUD_UP)
@@ -37,13 +37,13 @@ GPIO.setup(26, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
 clock_motor = Stepper(clock_motor_pins, stepper_delay)
 disk_motor = Stepper(disk_motor_pins, stepper_delay)
-stepper3 = Stepper(stepper3_pins, stepper_delay)
-stepper4 = Stepper(stepper4_pins, stepper_delay)
+bigdisc_motor = Stepper(bigdisc_motor_pins, stepper_delay)
+hotel_motor = Stepper(hotel_motor_pins, stepper_delay)
 
 clock_motor.hold()
 disk_motor.hold()
-stepper3.hold()
-stepper4.hold()
+bigdisc_motor.hold()
+hotel_motor.hold()
 
 def increase_visitors():
     global visitors
@@ -55,57 +55,39 @@ def get_temp():
     return(temp.replace("temp=", ""))
 
 def action():
+    # move clock
+    for counter_reed in range(100):
+        clock_motor.step("low-speed")
+    
+    clock_counter_failure = 0
+    while(GPIO.input(2) == 0):
+        clock_counter_failure += 1
+        clock_motor.step("high-speed")
+        if(clock_counter_failure >= 1000):
+            log.error("reed sensor clock failed!")
+            clock_motor.hold()
+            break
+    
+    time.sleep(1)
+
+    # clock last 5 minutes
+    for clock_last_tick in range(43):
+        clock_motor.step("high-speed")
+
+    clock_motor.hold()
+
+
     # set jack as output and play file
     os.system("amixer -c 0 cset numid=3 1 -q &")
     os.system("ffplay /home/pi/cuckoo_clock_raspberrypi/vielen_dank.mp3 -autoexit > /dev/null 2>&1 &")
 
-
-    # move stepper3
-    stepper3_failure = 0
-    for counter_stepper3 in  range(100):
-        stepper3.step()
-    stepper3_failure = 0
-    while(GPIO.input(14) == 0):
-        stepper3_failure += 1
-        stepper3.step()
-        
-        if(stepper3_failure >= 1000):
-            log.error("reed sensor stepper3 failed!")
-            stepper3.hold()
-            break
-        
-    stepper3.hold()
-
-    time.sleep(3)
-
-    '''reserve motor
-    stepper4_failure = 0
-    for counter_stepper4 in  range(100):
-        stepper4.step()
-    counter_disc_failure = 0
-    while(GPIO.input(15) == 0):
-        stepper4_failure += 1
-        stepper4.step()
-        
-        if(stepper4_failure > 1000):
-            log.error("reed sensor stepper3 failed!")
-            stepper4.hold()
-            main()
-    stepper4.hold()
-    '''
-
-    
-    # set jack as output and play file
-    os.system("amixer -c 0 cset numid=3 1 -q &")
-    os.system("ffplay /home/pi/cuckoo_clock_raspberrypi/traffic_noise.mp3 -autoexit > /dev/null 2>&1 &")
-    
-    # move disc
+    # move little disc
     for counter_disc in  range(100):
-        disk_motor.step()
+        disk_motor.step("high-speed")
     counter_disc_failure = 0
     while(GPIO.input(11) == 1):
         counter_disc_failure += 1
-        disk_motor.step()
+        disk_motor.step("high-speed")
         if(counter_disc_failure >= 1000):
             log.error("reed sensor disc failed!")
             disk_motor.hold()
@@ -113,9 +95,50 @@ def action():
 
     disk_motor.hold()
 
-    # start extern file to move servos
-    os.system("sudo python \"/home/pi/cuckoo_clock_raspberrypi/move_servo.py\"")
+    time.sleep(3)
     
+
+    # set jack as output and play file
+    os.system("amixer -c 0 cset numid=3 1 -q &")
+    os.system("ffplay /home/pi/cuckoo_clock_raspberrypi/traffic_noise.mp3 -autoexit > /dev/null 2>&1 &")
+
+    # move big disc
+    bigdisc_failure = 0
+    for counter_bigdisc in  range(100):
+        bigdisc_motor.step("high-speed")
+    bigdisc_failure = 0
+    while(GPIO.input(14) == 0):
+        bigdisc_failure += 1
+        bigdisc_motor.step("high-speed")
+        
+        if(bigdisc_failure >= 1000):
+            log.error("reed sensor bigdisc failed!")
+            bigdisc_motor.hold()
+            break
+        
+    bigdisc_motor.hold()
+
+    time.sleep(3)
+
+
+    # start extern file to move servos
+    os.system("sudo python3 \"/home/pi/cuckoo_clock_raspberrypi/servo_crane.py\"")
+
+    hotel_motor_failure = 0
+    for counter_hotel_motor in  range(100):
+        hotel_motor.step("high-speed")
+    counter_disc_failure = 0
+    while(GPIO.input(15) == 0):
+        hotel_motor_failure += 1
+        hotel_motor.step("high-speed")
+        
+        if(hotel_motor_failure > 1000):
+            log.error("reed sensor hotel motor failed!")
+            hotel_motor.hold()
+            main()
+    hotel_motor.hold()
+    
+    os.system("sudo python3 \"/home/pi/cuckoo_clock_raspberrypi/servo_tongue.py\"")
 
     # shutdown pi when temperature is over 75
     real_temp = get_temp()[:3]
@@ -155,26 +178,6 @@ def main():
                 log.info("shutdown raspberry pi")
                 os.system("sudo /sbin/shutdown -h now")
                 
-    # move clock
-    for counter_reed in range(100):
-        clock_motor.step()
-    
-    clock_counter_failure = 0
-    while(GPIO.input(2) == 0):
-        clock_counter_failure += 1
-        clock_motor.step()
-        if(clock_counter_failure >= 1000):
-            log.error("reed sensor clock failed!")
-            clock_motor.hold()
-            break
-    
-    time.sleep(1)
-
-    # clock last 5 minutes
-    for clock_last_tick in range(43):
-        clock_motor.step()
-
-    clock_motor.hold()
     action()
 
 if __name__ == '__main__':

@@ -1,2 +1,4 @@
-2019-08-05 16:38:46,167 - ERROR - reed sensor stepper3 failed!
-2019-08-05 16:39:00,494 - INFO - Temp: 51.
+2019-08-06 12:17:01,666 - INFO - startup raspberry pi
+2019-08-06 12:17:20,989 - INFO - startup raspberry pi
+2019-08-06 12:17:48,115 - ERROR - reed sensor bigdisc failed!
+2019-08-06 12:18:07,759 - ERROR - reed sensor hotel motor failed!
