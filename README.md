@@ -25,7 +25,7 @@ sudo apt install amixer
 
 Execute the main program:
 ```
-python clock.py
+python3 clock.py
 ```
 
 # Autostart with crontab
@@ -37,6 +37,6 @@ sudo crontab -e
 and write to the file the following line:
 
 ```
-@reboot sleep 5 && /usr/python /home/pi/cuckoo_clock_raspberrypi/clock.py >> /home/picuckoo_clock_raspberrypi/raspi.log 2>&1
+@reboot sleep 5 && /usr/bin/python3 /home/pi/cuckoo_clock_raspberrypi/clock.py >> /home/picuckoo_clock_raspberrypi/raspi.log 2>&1
 ```
 to start the script everytime at startup
