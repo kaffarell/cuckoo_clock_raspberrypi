@@ -1,4 +1,11 @@
-2019-08-06 12:17:01,666 - INFO - startup raspberry pi
-2019-08-06 12:17:20,989 - INFO - startup raspberry pi
-2019-08-06 12:17:48,115 - ERROR - reed sensor bigdisc failed!
-2019-08-06 12:18:07,759 - ERROR - reed sensor hotel motor failed!
+2019-08-06 15:31:29,748 - INFO - startup raspberry pi
+2019-08-06 15:31:58,933 - ERROR - reed sensor bigdisc failed!
+2019-08-06 15:32:07,060 - INFO - startup raspberry pi
+2019-08-06 15:33:13,070 - INFO - startup raspberry pi
+2019-08-06 15:33:42,260 - INFO - startup raspberry pi
+2019-08-06 15:34:14,500 - ERROR - reed sensor bigdisc failed!
+2019-08-06 15:34:22,493 - INFO - startup raspberry pi
+2019-08-06 15:35:23,952 - INFO - startup raspberry pi
+2019-08-06 15:35:50,614 - ERROR - reed sensor bigdisc failed!
+2019-08-06 15:36:17,229 - ERROR - reed sensor hotel motor failed!
+2019-08-06 15:36:24,067 - INFO - Temp: 50.

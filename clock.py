@@ -4,6 +4,7 @@ import time
 import os
 import logging as log
 from stepper import Stepper
+import threading
 
 
 visitors = 0
@@ -19,7 +20,7 @@ clock_motor_pins = [3, 4, 18, 27]
 disk_motor_pins = [23, 24, 10, 9]
 bigdisc_motor_pins = [21, 20, 16, 12]
 hotel_motor_pins = [19, 6, 5, 7]
-stepper_delay = 0.001
+
 
 # reed sensor big disc
 GPIO.setup(14, GPIO.IN, pull_up_down = GPIO.PUD_UP)
@@ -35,10 +36,10 @@ GPIO.setup(22, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 GPIO.setup(26, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
 
-clock_motor = Stepper(clock_motor_pins, stepper_delay)
-disk_motor = Stepper(disk_motor_pins, stepper_delay)
-bigdisc_motor = Stepper(bigdisc_motor_pins, stepper_delay)
-hotel_motor = Stepper(hotel_motor_pins, stepper_delay)
+clock_motor = Stepper(clock_motor_pins, 0.003)
+disk_motor = Stepper(disk_motor_pins, 0.003)
+bigdisc_motor = Stepper(bigdisc_motor_pins, 0.001)
+hotel_motor = Stepper(hotel_motor_pins, 0.001)
 
 clock_motor.hold()
 disk_motor.hold()
@@ -54,7 +55,7 @@ def get_temp():
     temp = os.popen("vcgencmd measure_temp").readline()
     return(temp.replace("temp=", ""))
 
-def action():
+def move_clock_motor():
     # move clock
     for counter_reed in range(100):
         clock_motor.step("low-speed")
@@ -75,11 +76,20 @@ def action():
         clock_motor.step("high-speed")
 
     clock_motor.hold()
+ 
 
+
+def action():
+
+    x = threading.Thread(target=move_clock_motor)
+    x.start()
+    
 
     # set jack as output and play file
     os.system("amixer -c 0 cset numid=3 1 -q &")
     os.system("ffplay /home/pi/cuckoo_clock_raspberrypi/vielen_dank.mp3 -autoexit > /dev/null 2>&1 &")
+
+    time.sleep(2)
 
     # move little disc
     for counter_disc in  range(100):
@@ -95,8 +105,6 @@ def action():
 
     disk_motor.hold()
 
-    time.sleep(3)
-    
 
     # set jack as output and play file
     os.system("amixer -c 0 cset numid=3 1 -q &")
@@ -110,7 +118,6 @@ def action():
     while(GPIO.input(14) == 0):
         bigdisc_failure += 1
         bigdisc_motor.step("high-speed")
-        
         if(bigdisc_failure >= 1000):
             log.error("reed sensor bigdisc failed!")
             bigdisc_motor.hold()
@@ -118,24 +125,21 @@ def action():
         
     bigdisc_motor.hold()
 
-    time.sleep(3)
-
 
     # start extern file to move servos
     os.system("sudo python3 \"/home/pi/cuckoo_clock_raspberrypi/servo_crane.py\"")
 
     hotel_motor_failure = 0
-    for counter_hotel_motor in  range(100):
+    for counter_hotel_motor in range(100):
         hotel_motor.step("high-speed")
-    counter_disc_failure = 0
+    hotel_motor_failure = 0
     while(GPIO.input(15) == 0):
         hotel_motor_failure += 1
         hotel_motor.step("high-speed")
-        
         if(hotel_motor_failure > 1000):
             log.error("reed sensor hotel motor failed!")
             hotel_motor.hold()
-            main()
+            break
     hotel_motor.hold()
     
     os.system("sudo python3 \"/home/pi/cuckoo_clock_raspberrypi/servo_tongue.py\"")

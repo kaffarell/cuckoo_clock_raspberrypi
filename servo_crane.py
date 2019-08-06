@@ -23,8 +23,12 @@ def main():
     time.sleep(0.5)
     
     p.ChangeDutyCycle(12.5)
-    g.ChangeDutyCycle(10)
-    time.sleep(3)
+    time.sleep(2)
+    for i in range(2):
+        g.ChangeDutyCycle(12.5)
+        time.sleep(2)
+        g.ChangeDutyCycle(2.5)
+        time.sleep(2)
     
     # set back to zero
     p.ChangeDutyCycle(2.5)
