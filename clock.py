@@ -85,13 +85,13 @@ def action():
     x.start()
     
 
-    # set jack as output and play file
+    # set jack as output and play vielen dank ... sound
     os.system("amixer -c 0 cset numid=3 1 -q &")
     os.system("ffplay /home/pi/cuckoo_clock_raspberrypi/vielen_dank.mp3 -autoexit > /dev/null 2>&1 &")
 
     time.sleep(2)
 
-    # move little disc
+    # move little disc (unesco)
     for counter_disc in  range(100):
         disk_motor.step("high-speed")
     counter_disc_failure = 0
@@ -106,11 +106,11 @@ def action():
     disk_motor.hold()
 
 
-    # set jack as output and play file
+    # set jack as output and play traffic noise
     os.system("amixer -c 0 cset numid=3 1 -q &")
     os.system("ffplay /home/pi/cuckoo_clock_raspberrypi/traffic_noise.mp3 -autoexit > /dev/null 2>&1 &")
 
-    # move big disc
+    # move big disc (cars)
     bigdisc_failure = 0
     for counter_bigdisc in  range(100):
         bigdisc_motor.step("high-speed")
@@ -126,7 +126,7 @@ def action():
     bigdisc_motor.hold()
 
 
-    # start extern file to move servos
+    # start extern file to move servos of crane
     os.system("sudo python3 \"/home/pi/cuckoo_clock_raspberrypi/servo_crane.py\"")
 
     hotel_motor_failure = 0
@@ -142,6 +142,7 @@ def action():
             break
     hotel_motor.hold()
     
+    # move the tongue with extern file
     os.system("sudo python3 \"/home/pi/cuckoo_clock_raspberrypi/servo_tongue.py\"")
 
     # shutdown pi when temperature is over 75
