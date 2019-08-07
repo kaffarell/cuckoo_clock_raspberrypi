@@ -76,13 +76,12 @@ def move_clock_motor():
         clock_motor.step("high-speed")
 
     clock_motor.hold()
- 
 
 
 def action():
 
-    x = threading.Thread(target=move_clock_motor)
-    x.start()
+    clock_motor_thread = threading.Thread(target=move_clock_motor)
+    clock_motor_thread.start()
     
 
     # set jack as output and play vielen dank ... sound
@@ -125,6 +124,7 @@ def action():
         
     bigdisc_motor.hold()
 
+    
 
     # start extern file to move servos of crane
     os.system("sudo python3 \"/home/pi/cuckoo_clock_raspberrypi/servo_crane.py\"")
@@ -136,7 +136,7 @@ def action():
     while(GPIO.input(15) == 0):
         hotel_motor_failure += 1
         hotel_motor.step("high-speed")
-        if(hotel_motor_failure > 1000):
+        if(hotel_motor_failure > 4000):
             log.error("reed sensor hotel motor failed!")
             hotel_motor.hold()
             break
@@ -155,6 +155,9 @@ def action():
     main()
 
 def main():
+    global visitors
+    # TODO: remove at release !!
+    print(visitors)
     main_run_bool = True
     shutdown_counter = 0
     
@@ -174,7 +177,6 @@ def main():
                 # when shutting down writing visitors to file
                 try:
                     with open("/home/pi/cuckoo_clock_raspberrypi/visitors", "a") as f:
-                        global visitors
                         f.write(str(visitors))
                         f.write("\n")
                 except Exception as e:
