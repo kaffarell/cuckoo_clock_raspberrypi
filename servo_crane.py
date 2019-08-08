@@ -22,17 +22,33 @@ def main():
     g.start(2.5)
     time.sleep(0.5)
     
-    p.ChangeDutyCycle(12.5)
-    time.sleep(2)
-    for i in range(2):
-        g.ChangeDutyCycle(12.5)
-        time.sleep(2)
-        g.ChangeDutyCycle(2.5)
-        time.sleep(2)
+
+
+    for i in range(3, 12):
+        p.ChangeDutyCycle(i)
+        time.sleep(1)
     
-    # set back to zero
-    p.ChangeDutyCycle(2.5)
-    g.ChangeDutyCycle(2.5)
+
+
+    for i in range(3, 12):
+        g.ChangeDutyCycle(i)
+        time.sleep(1)
+
+
+    for i in range(12, 3):
+        g.ChangeDutyCycle(i)
+        time.sleep(1)
+    
+
+    for i in range(12, 3):
+        p.ChangeDutyCycle(i)
+        time.sleep(1)
+
+
+    for i in range(12, 3):
+        g.ChangeDutyCycle(i)
+        time.sleep(1)
+
     time.sleep(3)
     
     p.stop()
