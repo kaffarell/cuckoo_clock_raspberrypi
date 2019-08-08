@@ -117,7 +117,7 @@ def action():
     while(GPIO.input(14) == 0):
         bigdisc_failure += 1
         bigdisc_motor.step("high-speed")
-        if(bigdisc_failure >= 1000):
+        if(bigdisc_failure >= 4000):
             log.error("reed sensor bigdisc failed!")
             bigdisc_motor.hold()
             break
@@ -136,7 +136,7 @@ def action():
     while(GPIO.input(15) == 0):
         hotel_motor_failure += 1
         hotel_motor.step("high-speed")
-        if(hotel_motor_failure > 4000):
+        if(hotel_motor_failure > 1000):
             log.error("reed sensor hotel motor failed!")
             hotel_motor.hold()
             break

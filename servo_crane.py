@@ -2,6 +2,7 @@
 
 import RPi.GPIO as GPIO
 import time
+import numpy
 
 
 # Pins of the servos
@@ -18,38 +19,60 @@ def main():
     g = GPIO.PWM(servo_pin_2, 50)
     
     # movement :
-    p.start(2.5)
-    g.start(2.5)
-    time.sleep(0.5)
+    p.start(3)
+    g.start(6)
+    input()
     
 
+    for a in numpy.arange(3, 11, 0.01):
+        p.ChangeDutyCycle(a)
+        time.sleep(0.005)
 
-    for i in range(3, 12):
-        p.ChangeDutyCycle(i)
-        time.sleep(1)
+
+    time.sleep(2)
+    
+# crane
     
 
+    for b in numpy.arange(6, 9, 0.01):
+        g.ChangeDutyCycle(b)
+        time.sleep(0.001)
 
-    for i in range(3, 12):
-        g.ChangeDutyCycle(i)
-        time.sleep(1)
+
+    time.sleep(1)
+    for c in numpy.arange(9, 4, -0.01):
+        g.ChangeDutyCycle(c)
+        time.sleep(0.001)
 
 
-    for i in range(12, 3):
-        g.ChangeDutyCycle(i)
-        time.sleep(1)
+    time.sleep(1)
+    for f in numpy.arange(4, 9, 0.01):
+        g.ChangeDutyCycle(f)
+        time.sleep(0.001)
+
+    time.sleep(1)
+    for h in numpy.arange(9, 4, -0.01):
+        g.ChangeDutyCycle(h)
+        time.sleep(0.001)
     
+    time.sleep(1)
 
-    for i in range(12, 3):
-        p.ChangeDutyCycle(i)
-        time.sleep(1)
+    for d in numpy.arange(4, 6, 0.01):
+        g.ChangeDutyCycle(d)
+        time.sleep(0.001)
 
 
-    for i in range(12, 3):
-        g.ChangeDutyCycle(i)
-        time.sleep(1)
+# crane
 
     time.sleep(3)
+
+    for e in numpy.arange(11, 3, -0.01):
+        p.ChangeDutyCycle(e)
+        time.sleep(0.005)
+
+
+
+
     
     p.stop()
     g.stop()
