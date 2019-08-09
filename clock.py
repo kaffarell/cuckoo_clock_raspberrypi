@@ -53,8 +53,7 @@ def get_temp():
     return(temp.replace("temp=", ""))
 
 
-def move_clock_motor():
-    print("OK")
+def move_clockmotor():
     # move clock
     for counter_reed in range(100):
         clock_motor.step("low-speed")
@@ -74,7 +73,7 @@ def move_clock_motor():
     clock_motor.hold()
 
 
-def move_little_disc():
+def move_littledisc():
     # move little disc (unesco)
     for counter_disc in  range(100):
         disk_motor.step("high-speed")
@@ -122,7 +121,7 @@ def move_hotelmotor():
 
 def action():
 
-    clock_motor_thread = threading.Thread(target=move_clock_motor)
+    clock_motor_thread = threading.Thread(target=move_clockmotor)
     clock_motor_thread.start()
     
 
@@ -132,7 +131,7 @@ def action():
 
     time.sleep(2)
 
-    move_little_disc()
+    move_littledisc()
 
     # set jack as output and play traffic noise
     os.system("amixer -c 0 cset numid=3 1 -q &")
