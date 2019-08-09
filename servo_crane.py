@@ -21,11 +21,10 @@ def main():
     # movement :
     p.start(3)
     g.start(6)
-    input()
     
 
-    for a in numpy.arange(3, 11, 0.01):
-        p.ChangeDutyCycle(a)
+    for i in numpy.arange(3, 11, 0.01):
+        p.ChangeDutyCycle(i)
         time.sleep(0.005)
 
 
@@ -34,31 +33,31 @@ def main():
 # crane
     
 
-    for b in numpy.arange(6, 9, 0.01):
-        g.ChangeDutyCycle(b)
+    for i in numpy.arange(6, 9, 0.01):
+        g.ChangeDutyCycle(i)
         time.sleep(0.001)
 
 
     time.sleep(1)
-    for c in numpy.arange(9, 4, -0.01):
-        g.ChangeDutyCycle(c)
+    for i in numpy.arange(9, 4, -0.01):
+        g.ChangeDutyCycle(i)
         time.sleep(0.001)
 
 
     time.sleep(1)
-    for f in numpy.arange(4, 9, 0.01):
-        g.ChangeDutyCycle(f)
+    for i in numpy.arange(4, 9, 0.01):
+        g.ChangeDutyCycle(i)
         time.sleep(0.001)
 
     time.sleep(1)
-    for h in numpy.arange(9, 4, -0.01):
-        g.ChangeDutyCycle(h)
+    for i in numpy.arange(9, 4, -0.01):
+        g.ChangeDutyCycle(i)
         time.sleep(0.001)
     
     time.sleep(1)
 
-    for d in numpy.arange(4, 6, 0.01):
-        g.ChangeDutyCycle(d)
+    for i in numpy.arange(4, 6, 0.01):
+        g.ChangeDutyCycle(i)
         time.sleep(0.001)
 
 
@@ -66,8 +65,8 @@ def main():
 
     time.sleep(3)
 
-    for e in numpy.arange(11, 3, -0.01):
-        p.ChangeDutyCycle(e)
+    for i in numpy.arange(11, 3, -0.01):
+        p.ChangeDutyCycle(i)
         time.sleep(0.005)
 
 
