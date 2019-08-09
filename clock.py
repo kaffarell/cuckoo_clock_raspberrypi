@@ -76,10 +76,10 @@ def move_clockmotor_tick():
 
 def move_littledisc():
     # move little disc (unesco)
-    for counter_disc in  range(100):
+    for counter_disc in range(100):
         disk_motor.step()
     counter_disc_failure = 0
-    while(GPIO.input(11) == 1):
+    while(GPIO.input(11) == 0):
         counter_disc_failure += 1
         disk_motor.step()
         if(counter_disc_failure >= 1000):
@@ -107,7 +107,7 @@ def move_bigdisc():
 def move_hotelmotor():
     # move hotel triangle
     hotel_motor_failure = 0
-    for counter_hotel_motor in range(100):
+    for counter_hotel_motor in range(30):
         hotel_motor.step()
     hotel_motor_failure = 0
     while(GPIO.input(15) == 0):
@@ -120,8 +120,12 @@ def move_hotelmotor():
     hotel_motor.hold()
 
 def move_hotelmotor_1():
-    for i in range(0, 171):
+    for i in range(0, 172):
         hotel_motor.step()
+    time.sleep(1)
+    for i in range(0, 172):
+        hotel_motor.step()
+    time.sleep(1)
 
 
 def action():

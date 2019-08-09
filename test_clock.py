@@ -1,6 +1,7 @@
 import clock
 import sys
 import os
+import time
 
 
 while(True):
@@ -29,3 +30,4 @@ while(True):
         clock.move_hotelmotor()
     elif selection == "7":
         sys.exit()
+    print("OK")

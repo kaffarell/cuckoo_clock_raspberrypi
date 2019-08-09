@@ -16,18 +16,22 @@ def main():
     p = GPIO.PWM(servo_pin_1, 50)
     
     # movement :
-    p.start(3)
-    time.sleep(0.5)
 
-    for i in numpy.arange(3, 12, 0.01):
+    p.start(9.6)
+    time.sleep(1)
+
+
+
+    for i in numpy.arange(9.6, 2.5, -0.01):
         p.ChangeDutyCycle(i)
-        time.sleep(0.001)
-
+        time.sleep(0.002)
+    
     time.sleep(3)
 
-    for i in numpy.arange(12, 3, 0.01):
+
+    for i in numpy.arange(2.5, 9.6, 0.01):
         p.ChangeDutyCycle(i)
-        time.sleep(0.001)
+        time.sleep(0.002)
     
     
     p.stop()
