@@ -36,10 +36,10 @@ GPIO.setup(22, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 GPIO.setup(26, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
 
-clock_motor = Stepper(clock_motor_pins, 0.003)
-disk_motor = Stepper(disk_motor_pins, 0.003)
+clock_motor = Stepper(clock_motor_pins, 0.002)
+disk_motor = Stepper(disk_motor_pins, 0.004)
 bigdisc_motor = Stepper(bigdisc_motor_pins, 0.001)
-hotel_motor = Stepper(hotel_motor_pins, 0.001)
+hotel_motor = Stepper(hotel_motor_pins, 0.002)
 
 clock_motor.hold()
 disk_motor.hold()
@@ -121,10 +121,7 @@ def move_hotelmotor():
 
 def action():
 
-    clock_motor_thread = threading.Thread(target=move_clockmotor)
-    clock_motor_thread.start()
-    
-
+    move_clockmotor()
     # set jack as output and play vielen dank ... sound
     os.system("amixer -c 0 cset numid=3 1 -q &")
     os.system("ffplay /home/pi/cuckoo_clock_raspberrypi/vielen_dank.mp3 -autoexit > /dev/null 2>&1 &")
@@ -137,9 +134,7 @@ def action():
     os.system("amixer -c 0 cset numid=3 1 -q &")
     os.system("ffplay /home/pi/cuckoo_clock_raspberrypi/traffic_noise.mp3 -autoexit > /dev/null 2>&1 &")
 
-    
     move_bigdisc()
-    
 
     # start extern file to move servos of crane
     os.system("sudo python3 \"/home/pi/cuckoo_clock_raspberrypi/servo_crane.py\"")
@@ -148,6 +143,7 @@ def action():
     
     # move the tongue with extern file
     os.system("sudo python3 \"/home/pi/cuckoo_clock_raspberrypi/servo_tongue.py\"")
+
 
     # shutdown pi when temperature is over 75
     real_temp = get_temp()[:3]
