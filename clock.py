@@ -46,16 +46,15 @@ disk_motor.hold()
 bigdisc_motor.hold()
 hotel_motor.hold()
 
-def increase_visitors():
-    global visitors
-    visitors += 1
 
 
 def get_temp():
     temp = os.popen("vcgencmd measure_temp").readline()
     return(temp.replace("temp=", ""))
 
+
 def move_clock_motor():
+    print("OK")
     # move clock
     for counter_reed in range(100):
         clock_motor.step("low-speed")
@@ -67,15 +66,58 @@ def move_clock_motor():
         if(clock_counter_failure >= 1000):
             log.error("reed sensor clock failed!")
             clock_motor.hold()
-            break
-    
+            break 
     time.sleep(1)
-
     # clock last 5 minutes
     for clock_last_tick in range(43):
         clock_motor.step("high-speed")
-
     clock_motor.hold()
+
+
+def move_little_disc():
+    # move little disc (unesco)
+    for counter_disc in  range(100):
+        disk_motor.step("high-speed")
+    counter_disc_failure = 0
+    while(GPIO.input(11) == 1):
+        counter_disc_failure += 1
+        disk_motor.step("high-speed")
+        if(counter_disc_failure >= 1000):
+            log.error("reed sensor disc failed!")
+            disk_motor.hold()
+            break  
+        disk_motor.hold()
+    
+def move_bigdisc():
+    # move big disc (cars)
+    bigdisc_failure = 0
+    for counter_bigdisc in  range(100):
+        bigdisc_motor.step("high-speed")
+    bigdisc_failure = 0
+    while(GPIO.input(14) == 0):
+        bigdisc_failure += 1
+        bigdisc_motor.step("high-speed")
+        if(bigdisc_failure >= 1000):
+            log.error("reed sensor bigdisc failed!")
+            bigdisc_motor.hold()
+            break       
+    bigdisc_motor.hold()
+
+
+def move_hotelmotor():
+    # move hotel triangle
+    hotel_motor_failure = 0
+    for counter_hotel_motor in range(100):
+        hotel_motor.step("high-speed")
+    hotel_motor_failure = 0
+    while(GPIO.input(15) == 0):
+        hotel_motor_failure += 1
+        hotel_motor.step("high-speed")
+        if(hotel_motor_failure > 4000):
+            log.error("reed sensor hotel motor failed!")
+            hotel_motor.hold()
+            break
+    hotel_motor.hold()
 
 
 def action():
@@ -90,57 +132,20 @@ def action():
 
     time.sleep(2)
 
-    # move little disc (unesco)
-    for counter_disc in  range(100):
-        disk_motor.step("high-speed")
-    counter_disc_failure = 0
-    while(GPIO.input(11) == 1):
-        counter_disc_failure += 1
-        disk_motor.step("high-speed")
-        if(counter_disc_failure >= 1000):
-            log.error("reed sensor disc failed!")
-            disk_motor.hold()
-            break
-
-    disk_motor.hold()
-
+    move_little_disc()
 
     # set jack as output and play traffic noise
     os.system("amixer -c 0 cset numid=3 1 -q &")
     os.system("ffplay /home/pi/cuckoo_clock_raspberrypi/traffic_noise.mp3 -autoexit > /dev/null 2>&1 &")
 
-    # move big disc (cars)
-    bigdisc_failure = 0
-    for counter_bigdisc in  range(100):
-        bigdisc_motor.step("high-speed")
-    bigdisc_failure = 0
-    while(GPIO.input(14) == 0):
-        bigdisc_failure += 1
-        bigdisc_motor.step("high-speed")
-        if(bigdisc_failure >= 1000):
-            log.error("reed sensor bigdisc failed!")
-            bigdisc_motor.hold()
-            break
-        
-    bigdisc_motor.hold()
-
+    
+    move_bigdisc()
     
 
     # start extern file to move servos of crane
     os.system("sudo python3 \"/home/pi/cuckoo_clock_raspberrypi/servo_crane.py\"")
 
-    hotel_motor_failure = 0
-    for counter_hotel_motor in range(100):
-        hotel_motor.step("high-speed")
-    hotel_motor_failure = 0
-    while(GPIO.input(15) == 0):
-        hotel_motor_failure += 1
-        hotel_motor.step("high-speed")
-        if(hotel_motor_failure > 4000):
-            log.error("reed sensor hotel motor failed!")
-            hotel_motor.hold()
-            break
-    hotel_motor.hold()
+    move_hotelmotor()
     
     # move the tongue with extern file
     os.system("sudo python3 \"/home/pi/cuckoo_clock_raspberrypi/servo_tongue.py\"")
@@ -166,7 +171,7 @@ def main():
 
         # start button
         if(GPIO.input(22) == 1):
-            increase_visitors()
+            visitors += 1
             main_run_bool = False
 
         # shutdown button
