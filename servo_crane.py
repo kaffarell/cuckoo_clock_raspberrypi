@@ -3,6 +3,7 @@
 import RPi.GPIO as GPIO
 import time
 import numpy
+import clock
 
 
 # Pins of the servos
@@ -42,6 +43,8 @@ def main():
     for i in numpy.arange(9, 4, -0.01):
         g.ChangeDutyCycle(i)
         time.sleep(0.001)
+    
+    clock.move_hotelmotor_1()
 
 
     time.sleep(1)

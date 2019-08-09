@@ -25,6 +25,7 @@ while(True):
     elif selection == "5":
         os.system("sudo python3 \"/home/pi/cuckoo_clock_raspberrypi/servo_tongue.py\"")
     elif selection == "6":
+        clock.move_hotelmotor_1()
         clock.move_hotelmotor()
     elif selection == "7":
         sys.exit()
