@@ -1,11 +1,11 @@
 #!/usr/bin/python3
-import RPi.GPIO as GPIO
-import time
-import os
 import logging as log
-from stepper import Stepper
+import os
 import threading
+import time
 
+import RPi.GPIO as GPIO
+from stepper import Stepper
 
 visitors = 0
 
@@ -193,4 +193,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
