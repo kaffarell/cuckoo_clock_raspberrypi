@@ -1,11 +1,11 @@
 #!/usr/bin/python3
-import RPi.GPIO as GPIO
-import time
-import os
 import logging as log
-from stepper import Stepper
+import os
 import threading
+import time
 
+import RPi.GPIO as GPIO
+from stepper import Stepper
 
 visitors = 0
 
@@ -36,26 +36,24 @@ GPIO.setup(22, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 GPIO.setup(26, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
 
-clock_motor = Stepper(clock_motor_pins, 0.003)
-disk_motor = Stepper(disk_motor_pins, 0.003)
+clock_motor = Stepper(clock_motor_pins, 0.002)
+disk_motor = Stepper(disk_motor_pins, 0.004)
 bigdisc_motor = Stepper(bigdisc_motor_pins, 0.001)
-hotel_motor = Stepper(hotel_motor_pins, 0.001)
+hotel_motor = Stepper(hotel_motor_pins, 0.002)
 
 clock_motor.hold()
 disk_motor.hold()
 bigdisc_motor.hold()
 hotel_motor.hold()
 
-def increase_visitors():
-    global visitors
-    visitors += 1
 
 
 def get_temp():
     temp = os.popen("vcgencmd measure_temp").readline()
     return(temp.replace("temp=", ""))
 
-def move_clock_motor():
+
+def move_clockmotor():
     # move clock
     for counter_reed in range(100):
         clock_motor.step("low-speed")
@@ -67,29 +65,15 @@ def move_clock_motor():
         if(clock_counter_failure >= 1000):
             log.error("reed sensor clock failed!")
             clock_motor.hold()
-            break
-    
+            break 
     time.sleep(1)
-
     # clock last 5 minutes
     for clock_last_tick in range(43):
         clock_motor.step("high-speed")
-
     clock_motor.hold()
 
 
-def action():
-
-    clock_motor_thread = threading.Thread(target=move_clock_motor)
-    clock_motor_thread.start()
-    
-
-    # set jack as output and play vielen dank ... sound
-    os.system("amixer -c 0 cset numid=3 1 -q &")
-    os.system("ffplay /home/pi/cuckoo_clock_raspberrypi/vielen_dank.mp3 -autoexit > /dev/null 2>&1 &")
-
-    time.sleep(2)
-
+def move_littledisc():
     # move little disc (unesco)
     for counter_disc in  range(100):
         disk_motor.step("high-speed")
@@ -100,15 +84,10 @@ def action():
         if(counter_disc_failure >= 1000):
             log.error("reed sensor disc failed!")
             disk_motor.hold()
-            break
-
-    disk_motor.hold()
-
-
-    # set jack as output and play traffic noise
-    os.system("amixer -c 0 cset numid=3 1 -q &")
-    os.system("ffplay /home/pi/cuckoo_clock_raspberrypi/traffic_noise.mp3 -autoexit > /dev/null 2>&1 &")
-
+            break  
+        disk_motor.hold()
+    
+def move_bigdisc():
     # move big disc (cars)
     bigdisc_failure = 0
     for counter_bigdisc in  range(100):
@@ -120,15 +99,12 @@ def action():
         if(bigdisc_failure >= 4000):
             log.error("reed sensor bigdisc failed!")
             bigdisc_motor.hold()
-            break
-        
+            break       
     bigdisc_motor.hold()
 
-    
 
-    # start extern file to move servos of crane
-    os.system("sudo python3 \"/home/pi/cuckoo_clock_raspberrypi/servo_crane.py\"")
-
+def move_hotelmotor():
+    # move hotel triangle
     hotel_motor_failure = 0
     for counter_hotel_motor in range(100):
         hotel_motor.step("high-speed")
@@ -141,9 +117,33 @@ def action():
             hotel_motor.hold()
             break
     hotel_motor.hold()
+
+
+def action():
+
+    move_clockmotor()
+    # set jack as output and play vielen dank ... sound
+    os.system("amixer -c 0 cset numid=3 1 -q &")
+    os.system("ffplay /home/pi/cuckoo_clock_raspberrypi/vielen_dank.mp3 -autoexit > /dev/null 2>&1 &")
+
+    time.sleep(2)
+
+    move_littledisc()
+
+    # set jack as output and play traffic noise
+    os.system("amixer -c 0 cset numid=3 1 -q &")
+    os.system("ffplay /home/pi/cuckoo_clock_raspberrypi/traffic_noise.mp3 -autoexit > /dev/null 2>&1 &")
+
+    move_bigdisc()
+
+    # start extern file to move servos of crane
+    os.system("sudo python3 \"/home/pi/cuckoo_clock_raspberrypi/servo_crane.py\"")
+
+    move_hotelmotor()
     
     # move the tongue with extern file
     os.system("sudo python3 \"/home/pi/cuckoo_clock_raspberrypi/servo_tongue.py\"")
+
 
     # shutdown pi when temperature is over 75
     real_temp = get_temp()[:3]
@@ -166,7 +166,7 @@ def main():
 
         # start button
         if(GPIO.input(22) == 1):
-            increase_visitors()
+            visitors += 1
             main_run_bool = False
 
         # shutdown button
@@ -189,4 +189,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
