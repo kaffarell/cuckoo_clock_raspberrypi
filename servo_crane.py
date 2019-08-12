@@ -44,7 +44,6 @@ def main():
         g.ChangeDutyCycle(i)
         time.sleep(0.001)
     
-    # clock.move_hotelmotor_1()
 
 
     time.sleep(1)

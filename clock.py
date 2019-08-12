@@ -17,7 +17,7 @@ log.basicConfig(level=log.DEBUG, filename='/home/pi/cuckoo_clock_raspberrypi/ras
 log.info("startup raspberry pi")
 
 clock_motor_pins = [3, 4, 18, 27]
-disk_motor_pins = [23, 24, 10, 9]
+unesco_motor_pins = [23, 24, 10, 9]
 bigdisc_motor_pins = [21, 20, 16, 12]
 hotel_motor_pins = [19, 6, 5, 7]
 
@@ -37,12 +37,12 @@ GPIO.setup(26, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
 
 clock_motor = Stepper(clock_motor_pins, 0.002)
-disk_motor = Stepper(disk_motor_pins, 0.004)
+unesco_motor = Stepper(unesco_motor_pins, 0.004)
 bigdisc_motor = Stepper(bigdisc_motor_pins, 0.001)
 hotel_motor = Stepper(hotel_motor_pins, 0.002)
 
 clock_motor.hold()
-disk_motor.hold()
+unesco_motor.hold()
 bigdisc_motor.hold()
 hotel_motor.hold()
 
@@ -74,19 +74,26 @@ def move_clockmotor_tick():
     clock_motor.hold()
 
 
-def move_littledisc():
+def move_unesco_tomiddle():
+    time.sleep(3)
+    # move until middle pos
+    for i in range(256):
+        unesco_motor.step()
+    time.sleep(3)
+
+def move_unesco(): 
     # move little disc (unesco)
-    for counter_disc in range(100):
-        disk_motor.step()
+    for counter_disc in range(50):
+        unesco_motor.step()
     counter_disc_failure = 0
     while(GPIO.input(11) == 0):
         counter_disc_failure += 1
-        disk_motor.step()
+        unesco_motor.step()
         if(counter_disc_failure >= 1000):
             log.error("reed sensor disc failed!")
-            disk_motor.hold()
+            unesco_motor.hold()
             break  
-        disk_motor.hold()
+        unesco_motor.hold()
     
 def move_bigdisc():
     # move big disc (cars)
@@ -122,37 +129,47 @@ def move_hotelmotor():
 def move_hotelmotor_1():
     for i in range(0, 172):
         hotel_motor.step()
-    time.sleep(1)
-    for i in range(0, 172):
-        hotel_motor.step()
-    time.sleep(1)
+    time.sleep(1) 
+
+def move_crane():
+    # start extern file to move servos of crane
+    os.system("sudo python3 \"/home/pi/cuckoo_clock_raspberrypi/servo_crane.py\"")
 
 
 def action():
 
+    unesco_thread = threading.Thread(target=move_unesco_tomiddle)
+    unesco_thread.start()
+
     move_clockmotor()
 
-    # set jack as output and play vielen dank ... sound
-    os.system("amixer -c 0 cset numid=3 1 -q &")
-    os.system("ffplay /home/pi/cuckoo_clock_raspberrypi/vielen_dank.mp3 -autoexit > /dev/null 2>&1 &")
 
     time.sleep(2)
 
-    move_littledisc()
+    # set jack as output and play vielen dank ... sound
+    os.system("amixer -c 0 cset numid=3 1 -q &")
+    os.system("ffplay /home/pi/cuckoo_clock_raspberrypi/vielen_dank.mp3 -autoexit > /dev/null 2>&1 ")
 
     # set jack as output and play traffic noise
     os.system("amixer -c 0 cset numid=3 1 -q &")
     os.system("ffplay /home/pi/cuckoo_clock_raspberrypi/traffic_noise.mp3 -autoexit > /dev/null 2>&1 &")
 
     move_bigdisc()
+    move_unesco()
 
-    # start extern file to move servos of crane
-    os.system("sudo python3 \"/home/pi/cuckoo_clock_raspberrypi/servo_crane.py\"")
-
-    # move_hotelmotor_1()
-    move_hotelmotor()
     
+    crane_thread = threading.Thread(target=move_crane)
+    crane_thread.start()
+
+    move_hotelmotor_1()
+    time.sleep(3)
+
     move_clockmotor_tick()
+    time.sleep(3)
+
+    move_hotelmotor_1()
+    time.sleep(3)
+
 
     # set jack as output and play kuckuck noise
     os.system("amixer -c 0 cset numid=3 1 -q &")
@@ -162,12 +179,14 @@ def action():
     os.system("sudo python3 \"/home/pi/cuckoo_clock_raspberrypi/servo_tongue.py\"")
 
 
+    move_hotelmotor()
+
+
     # shutdown pi when temperature is over 75
     real_temp = get_temp()[:3]
     if(float(real_temp) >= 75.0):
         log.error("rasperrypi overheating!")
-        os.system("/sbin/shutdown -h now")
-    
+        os.system("/sbin/halt") 
     log.info("Temp: %s", str(real_temp))
     main()
 
