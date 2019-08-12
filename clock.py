@@ -162,13 +162,13 @@ def action():
     crane_thread.start()
 
     move_hotelmotor_1()
-    time.sleep(3)
+    time.sleep(2)
 
     move_clockmotor_tick()
-    time.sleep(3)
+    time.sleep(2)
 
     move_hotelmotor_1()
-    time.sleep(3)
+    time.sleep(2)
 
 
     # set jack as output and play kuckuck noise
