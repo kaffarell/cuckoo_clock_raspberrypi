@@ -14,14 +14,9 @@ Standard Raspbian installation
 For sound:  
 
 ```
-sudo apt install ffplay
+sudo apt install ffmpeg
 ```
 
-and optional: 
-
-```
-sudo apt install amixer
-```
 
 Execute the main program:
 ```
