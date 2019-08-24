@@ -7,8 +7,10 @@ import clock
 
 
 # Pins of the servos
-servo_pin_1 = 8
-servo_pin_2 = 13
+# p
+servo_pin_1 = 13
+# g
+servo_pin_2 = 8
 
 def main():
     # setup :

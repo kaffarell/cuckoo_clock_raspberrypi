@@ -36,9 +36,9 @@ GPIO.setup(22, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 GPIO.setup(26, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
 
-clock_motor = Stepper(clock_motor_pins, 0.002)
+clock_motor = Stepper(clock_motor_pins, 0.006)
 unesco_motor = Stepper(unesco_motor_pins, 0.004)
-bigdisc_motor = Stepper(bigdisc_motor_pins, 0.001)
+bigdisc_motor = Stepper(bigdisc_motor_pins, 0.002)
 hotel_motor = Stepper(hotel_motor_pins, 0.002)
 
 clock_motor.hold()
@@ -69,15 +69,15 @@ def move_clockmotor():
 
 def move_clockmotor_tick():
     # clock last 5 minutes
-    for clock_last_tick in range(43):
+    for clock_last_tick in range(40):
         clock_motor.step()
     clock_motor.hold()
 
 
 def move_unesco_tomiddle():
-    time.sleep(3)
+    time.sleep(4)
     # move until middle pos
-    for i in range(256):
+    for i in range(280):
         unesco_motor.step()
     time.sleep(3)
 
@@ -131,45 +131,51 @@ def move_hotelmotor_1():
         hotel_motor.step()
     time.sleep(1) 
 
-def move_crane():
-    # start extern file to move servos of crane
-    os.system("sudo python3 \"/home/pi/cuckoo_clock_raspberrypi/servo_crane.py\"")
-
-
-def action():
-
-    unesco_thread = threading.Thread(target=move_unesco_tomiddle)
-    unesco_thread.start()
-
-    move_clockmotor()
-
-
-    time.sleep(2)
-
+def play_sound():
     # set jack as output and play vielen dank ... sound
     os.system("amixer -c 0 cset numid=3 1 -q &")
-    os.system("ffplay /home/pi/cuckoo_clock_raspberrypi/vielen_dank.mp3 -autoexit > /dev/null 2>&1 ")
-
+    os.system("ffplay /home/pi/cuckoo_clock_raspberrypi/vielen_dank.mp3 -autoexit > /dev/null 2>&1")
     # set jack as output and play traffic noise
     os.system("amixer -c 0 cset numid=3 1 -q &")
     os.system("ffplay /home/pi/cuckoo_clock_raspberrypi/traffic_noise.mp3 -autoexit > /dev/null 2>&1 &")
 
-    move_bigdisc()
-    move_unesco()
+def move_hotel_motor():
+    time.sleep(7)
+    move_hotelmotor_1()
+    time.sleep(2)
 
+
+def action():
+    play_sound_thread = threading.Thread(target=play_sound)
+    play_sound_thread.start()
+
+    unesco_thread = threading.Thread(target=move_unesco_tomiddle)
+    unesco_thread.start()
+
+    move_clockmotor_thread = threading.Thread(target=move_clockmotor)
+    move_clockmotor_thread.start()
+
+    time.sleep(20)
     
-    crane_thread = threading.Thread(target=move_crane)
-    crane_thread.start()
+    move_bigdisc()
+
+    # set jack as output and play traffic noise
+    os.system("amixer -c 0 cset numid=3 1 -q &")
+    os.system("ffplay /home/pi/cuckoo_clock_raspberrypi/crane_sound.mp3 -autoexit > /dev/null 2>&1 &")
+    
+    hotel_motor_thread = threading.Thread(target=move_hotel_motor)
+    hotel_motor_thread.start()
+    
+    # start extern file to move servos of crane
+    os.system("sudo python3 \"/home/pi/cuckoo_clock_raspberrypi/servo_crane.py\"")
+
+    move_unesco_thread = threading.Thread(target=move_unesco)
+    move_unesco_thread.start()
 
     move_hotelmotor_1()
     time.sleep(2)
 
     move_clockmotor_tick()
-    time.sleep(2)
-
-    move_hotelmotor_1()
-    time.sleep(2)
-
 
     # set jack as output and play kuckuck noise
     os.system("amixer -c 0 cset numid=3 1 -q &")
@@ -177,7 +183,7 @@ def action():
 
     # move the tongue with extern file
     os.system("sudo python3 \"/home/pi/cuckoo_clock_raspberrypi/servo_tongue.py\"")
-
+    
 
     move_hotelmotor()
 

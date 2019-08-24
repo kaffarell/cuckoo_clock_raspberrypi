@@ -17,15 +17,20 @@ while(True):
 
     if selection == "1":
         clock.move_clockmotor()
+        time.sleep(3)
+        clock.move_clockmotor_tick()
     elif selection == "2":
         clock.move_bigdisc()
     elif selection == "3":
-        clock.move_littledisc()
+        clock.move_unesco_tomiddle()
+        time.sleep(3)
+        clock.move_unesco()
     elif selection == "4":
         os.system("sudo python3 \"/home/pi/cuckoo_clock_raspberrypi/servo_crane.py\"")
     elif selection == "5":
         os.system("sudo python3 \"/home/pi/cuckoo_clock_raspberrypi/servo_tongue.py\"")
     elif selection == "6":
+        clock.move_hotelmotor_1()
         clock.move_hotelmotor_1()
         clock.move_hotelmotor()
     elif selection == "7":

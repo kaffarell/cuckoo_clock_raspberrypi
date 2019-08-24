@@ -1,65 +1,54 @@
-2019-08-09 15:52:29,464 - INFO - startup raspberry pi
-2019-08-09 15:53:06,077 - INFO - startup raspberry pi
-2019-08-09 15:53:26,375 - INFO - startup raspberry pi
-2019-08-09 15:55:25,374 - INFO - startup raspberry pi
-2019-08-09 15:55:54,847 - INFO - startup raspberry pi
-2019-08-09 15:56:08,155 - INFO - startup raspberry pi
-2019-08-09 15:59:17,494 - INFO - startup raspberry pi
-2019-08-09 15:59:55,335 - INFO - startup raspberry pi
-2019-08-09 16:00:25,425 - INFO - Temp: 53.
-2019-08-09 16:05:35,293 - INFO - startup raspberry pi
-2019-08-09 16:10:19,369 - INFO - startup raspberry pi
-2019-08-09 16:10:37,308 - INFO - startup raspberry pi
-2019-08-09 16:11:56,871 - INFO - startup raspberry pi
-2019-08-09 16:12:58,788 - INFO - startup raspberry pi
-2019-08-09 16:16:03,603 - INFO - startup raspberry pi
-2019-08-09 16:16:28,679 - ERROR - reed sensor hotel motor failed!
-2019-08-09 16:20:58,244 - INFO - startup raspberry pi
-2019-08-09 16:27:17,653 - INFO - startup raspberry pi
-2019-08-09 16:28:08,735 - INFO - startup raspberry pi
-2019-08-09 16:28:45,035 - INFO - startup raspberry pi
-2019-08-09 16:28:55,984 - INFO - startup raspberry pi
-2019-08-09 16:34:16,244 - INFO - startup raspberry pi
-2019-08-09 16:48:00,346 - INFO - startup raspberry pi
-2019-08-09 16:49:22,045 - INFO - startup raspberry pi
-2019-08-09 16:49:36,037 - INFO - startup raspberry pi
-2019-08-09 16:49:53,330 - INFO - startup raspberry pi
-2019-08-09 16:50:56,745 - INFO - startup raspberry pi
-2019-08-09 16:51:42,726 - INFO - startup raspberry pi
-2019-08-09 16:52:48,907 - INFO - startup raspberry pi
-2019-08-09 16:53:16,761 - INFO - startup raspberry pi
-2019-08-09 16:54:36,661 - INFO - startup raspberry pi
-2019-08-09 16:54:39,014 - INFO - startup raspberry pi
-2019-08-09 16:55:44,779 - INFO - startup raspberry pi
-2019-08-09 16:57:04,613 - INFO - startup raspberry pi
-2019-08-09 16:58:49,405 - INFO - startup raspberry pi
-2019-08-09 16:59:24,498 - INFO - startup raspberry pi
-2019-08-09 17:01:30,215 - INFO - startup raspberry pi
-2019-08-09 17:01:57,911 - INFO - startup raspberry pi
-2019-08-09 17:03:12,534 - INFO - startup raspberry pi
-2019-08-09 17:03:54,185 - INFO - startup raspberry pi
-2019-08-09 17:04:23,536 - INFO - startup raspberry pi
-2019-08-09 17:05:38,442 - INFO - startup raspberry pi
-2019-08-09 17:06:05,225 - INFO - startup raspberry pi
-2019-08-09 17:06:47,961 - INFO - startup raspberry pi
-2019-08-09 17:07:18,664 - INFO - startup raspberry pi
-2019-08-09 17:08:34,542 - INFO - startup raspberry pi
-2019-08-09 17:09:22,395 - INFO - startup raspberry pi
-2019-08-09 17:10:04,903 - INFO - startup raspberry pi
-2019-08-09 17:10:53,260 - INFO - startup raspberry pi
-2019-08-09 17:11:22,448 - INFO - startup raspberry pi
-2019-08-09 17:11:56,036 - INFO - startup raspberry pi
-2019-08-09 17:14:57,635 - INFO - startup raspberry pi
-2019-08-09 17:16:01,805 - INFO - startup raspberry pi
-2019-08-09 17:18:36,928 - INFO - startup raspberry pi
-2019-08-09 17:19:12,922 - INFO - startup raspberry pi
-2019-08-09 17:19:59,871 - INFO - startup raspberry pi
-2019-08-09 17:21:39,616 - INFO - startup raspberry pi
-2019-08-09 17:21:57,407 - INFO - startup raspberry pi
-2019-08-09 17:22:18,932 - INFO - startup raspberry pi
-2019-08-09 17:22:55,877 - ERROR - reed sensor hotel motor failed!
-2019-08-09 17:23:04,373 - INFO - Temp: 52.
-2019-08-09 17:43:38,875 - INFO - startup raspberry pi
-2019-08-09 17:50:12,792 - INFO - startup raspberry pi
-2019-08-09 17:50:25,343 - INFO - startup raspberry pi
-2019-08-09 17:50:53,870 - INFO - Temp: 52.
+2019-08-15 03:40:03,153 - INFO - startup raspberry pi
+2019-08-15 03:43:22,056 - INFO - startup raspberry pi
+2019-08-15 03:44:05,269 - INFO - Temp: 46.
+2019-08-15 03:46:06,520 - INFO - startup raspberry pi
+2019-08-15 03:46:55,948 - INFO - startup raspberry pi
+2019-08-15 03:47:39,161 - INFO - Temp: 47.
+2019-08-15 03:48:49,604 - INFO - startup raspberry pi
+2019-08-15 03:49:32,795 - INFO - Temp: 47.
+2019-08-15 03:49:37,224 - INFO - startup raspberry pi
+2019-08-15 03:50:31,070 - INFO - startup raspberry pi
+2019-08-15 03:51:14,265 - INFO - Temp: 47.
+2019-08-15 03:52:12,074 - INFO - startup raspberry pi
+2019-08-15 03:52:55,257 - INFO - Temp: 47.
+2019-08-15 03:54:06,154 - INFO - startup raspberry pi
+2019-08-15 03:54:49,355 - INFO - Temp: 47.
+2019-08-15 03:57:36,477 - INFO - startup raspberry pi
+2019-08-15 03:59:16,314 - INFO - startup raspberry pi
+2019-08-15 03:59:53,610 - INFO - Temp: 47.
+2019-08-15 04:08:15,470 - INFO - startup raspberry pi
+2019-08-15 04:09:08,442 - INFO - startup raspberry pi
+2019-08-15 04:09:45,716 - INFO - Temp: 47.
+2019-08-15 04:11:56,376 - INFO - startup raspberry pi
+2019-08-15 04:12:42,100 - INFO - startup raspberry pi
+2019-08-15 04:13:19,372 - INFO - Temp: 47.
+2019-08-15 04:14:12,780 - INFO - startup raspberry pi
+2019-08-15 04:14:50,089 - INFO - Temp: 47.
+2019-08-15 04:15:19,944 - INFO - startup raspberry pi
+2019-08-15 04:15:38,841 - INFO - startup raspberry pi
+2019-08-15 04:16:25,110 - INFO - startup raspberry pi
+2019-08-15 04:17:02,395 - INFO - Temp: 47.
+2019-08-15 04:18:00,851 - INFO - startup raspberry pi
+2019-08-15 04:18:38,128 - INFO - Temp: 48.
+2019-08-15 04:19:21,978 - INFO - startup raspberry pi
+2019-08-15 04:20:13,393 - INFO - startup raspberry pi
+2019-08-15 04:20:50,678 - INFO - Temp: 47.
+2019-08-15 04:20:58,239 - INFO - startup raspberry pi
+2019-08-15 04:21:43,045 - INFO - startup raspberry pi
+2019-08-15 04:22:21,005 - INFO - Temp: 47.
+2019-08-15 04:25:46,200 - INFO - startup raspberry pi
+2019-08-15 04:27:07,214 - INFO - startup raspberry pi
+2019-08-15 04:27:48,290 - INFO - startup raspberry pi
+2019-08-15 04:28:03,538 - INFO - startup raspberry pi
+2019-08-15 04:28:09,547 - INFO - shutdown raspberry pi
+2019-08-15 04:28:22,265 - INFO - startup raspberry pi
+2019-08-15 04:30:03,211 - INFO - startup raspberry pi
+2019-08-15 04:30:41,233 - INFO - Temp: 46.
+Terminated
+2019-08-15 04:33:19,425 - INFO - startup raspberry pi
+2019-08-15 04:34:06,140 - INFO - startup raspberry pi
+2019-08-15 04:34:44,121 - INFO - Temp: 46.
+2019-08-15 04:35:47,822 - INFO - startup raspberry pi
+2019-08-15 04:36:25,774 - INFO - Temp: 47.
+2019-08-15 04:36:37,289 - INFO - shutdown raspberry pi
+2019-08-15 04:36:49,409 - INFO - startup raspberry pi
